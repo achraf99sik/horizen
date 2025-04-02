@@ -23,7 +23,8 @@
         "nunomaduro/collision": "^8.6",
         "peckphp/peck": "^0.1.3",
         "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.1"
+        "pestphp/pest-plugin-laravel": "^3.1",
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -57,11 +58,13 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
         ],
+        "refactor": "rector",
         "style": "pint",
         "test:style": "pint --test",
         "test:unit": "pest --parallel",
         "test:types": "phpstan",
         "test:typos": "peck",
+        "test:refactor": "rector --dry-run",
         "test": [
             "@test:unit",
             "@test:style",
