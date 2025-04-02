@@ -57,21 +57,11 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
         ],
-        "style": [
-            "pint"
-        ],
-        "test:style": [
-            "pint --test"
-        ],
-        "test:unit": [
-            "pest --parallel"
-        ],
-        "test:types": [
-            "phpstan"
-        ],
-        "test:typos": [
-            "peck"
-        ],
+        "style": "pint",
+        "test:style": "pint --test",
+        "test:unit": "pest --parallel",
+        "test:types": "phpstan",
+        "test:typos": "peck",
         "test": [
             "@test:unit",
             "@test:style",
