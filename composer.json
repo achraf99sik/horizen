@@ -69,7 +69,8 @@
             "@test:unit",
             "@test:style",
             "@test:typos",
-            "@test:types"
+            "@test:types",
+            "@test:refactor"
         ]
     },
     "extra": {
