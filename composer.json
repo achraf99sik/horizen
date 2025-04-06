@@ -61,7 +61,7 @@
         "refactor": "rector",
         "style": "pint",
         "test:style": "pint --test",
-        "test:unit": "pest --parallel",
+        "test:unit": "pest --parallel --coverage --exactly=100",
         "test:types": "phpstan",
         "test:typos": "peck",
         "test:refactor": "rector --dry-run",
