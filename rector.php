@@ -12,7 +12,9 @@ return RectorConfig::configure()
         __DIR__.'/database',
         __DIR__.'/public',
     ])
-    ->withSkip([])
+    ->withSkip([
+        AddOverrideAttributeToOverriddenMethodsRector::class,
+    ])
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
