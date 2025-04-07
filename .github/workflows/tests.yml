@@ -1,9 +1,10 @@
-name : Tests
+name: Tests
 
 on:
   push:
     branches:
       - main
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -12,15 +13,30 @@ jobs:
       matrix:
         php: [8.4]
 
-    name : Tests
+    name: Tests
+    services:
+      postgres:
+        image: postgres:17
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: horizon_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-timeout=30s
+          --health-retries=3
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
-          key: dependencies-php-composer-${{ haseFiles(composer.lock) }}
+          key: dependencies-php-composer-${{ hashFiles('composer.lock') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -69,5 +85,17 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Tests
+      - name: Set up the environment file for testing
+        run: |
+          echo "DB_CONNECTION=pgsql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_DATABASE=horizon_test" >> .env
+          echo "DB_USERNAME=postgres" >> .env
+          echo "DB_PASSWORD=postgres" >> .env
+
+      - name: Run database migrations
+        run: php artisan migrate --env=testing
+
+      - name: Run Tests
         run: composer test
