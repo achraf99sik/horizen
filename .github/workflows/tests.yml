@@ -38,6 +38,10 @@ jobs:
           path: ~/.composer/cache/files
           key: dependencies-php-composer-${{ hashFiles('composer.lock') }}
 
+      - name: Install Aspell
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
