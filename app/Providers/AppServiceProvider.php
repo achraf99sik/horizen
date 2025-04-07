@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -27,9 +29,9 @@ class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureDates();
     }
+
     /**
      * Configure the app commands
-     * @return void
      */
     private function configureCommands(): void
     {
@@ -37,9 +39,9 @@ class AppServiceProvider extends ServiceProvider
             $this->app->isProduction(),
         ); // prohibit user from runnig DB destructive commands in production like "migrate:fresh"
     }
+
     /**
      * Configure the app models
-     * @return void
      */
     private function configureModels(): void
     {
@@ -47,9 +49,9 @@ class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict();
     }
+
     /**
      * Configure the app Dates
-     * @return void
      */
     private function configureDates(): void
     {
