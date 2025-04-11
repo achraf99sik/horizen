@@ -6,7 +6,9 @@
             "filesystems",
             "favicon",
             "css",
-            "js"
+            "js",
+            "nginx",
+            "dockerfile"
         ],
         "paths": []
     }

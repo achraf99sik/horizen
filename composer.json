@@ -61,6 +61,7 @@
         ],
         "refactor": "rector",
         "style": "pint",
+        "ignore": "peck --ignore-all",
         "test:style": "pint --test",
         "test:unit": "pest --parallel --coverage --exactly=100",
         "test:type-coverage": "pest --type-coverage --min=100",
