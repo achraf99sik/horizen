@@ -6,7 +6,6 @@ services:
     container_name: laravel-app
     volumes:
       - .:/var/www
-      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
     depends_on:
       - db
     networks:
@@ -44,7 +43,6 @@ services:
       - "8000:80"
     volumes:
       - .:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - app
     networks:
