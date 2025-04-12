@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,8 @@ class WatchHistoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "video_id" => Video::factory(),
+            "user_id" => User::factory(),
         ];
     }
 }
