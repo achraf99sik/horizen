@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Video;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +21,9 @@ class CommentFactory extends Factory
     {
         return [
             "text" => $this->faker->sentence,
-            "video_id" => $this->faker->numberBetween(1, 10),
-            "comment_id" => $this->faker->numberBetween(1, 10),
-            "user_id" => $this->faker->numberBetween(1, 10),
+            "video_id" => Video::factory(),
+            "comment_id" => Comment::factory(),
+            "user_id" => User::factory(),
         ];
     }
 }
