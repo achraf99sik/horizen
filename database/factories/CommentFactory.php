@@ -20,7 +20,7 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            "text" => $this->faker->sentence,
+            "text" => $this->faker->sentences,
             "video_id" => Video::factory(),
             "comment_id" => Comment::factory(),
             "user_id" => User::factory(),
