@@ -27,6 +27,9 @@ All notable changes to this project will be documented in this file.
 - Change back thumbnail from binary to longText
 - Remove unnecessary rememberTocken from hidden column in the User Model
 - Fixing test yml hashfiles bug
+- Code style test is failing due to unmuching code styles
+- Peck test is failing becouse of playlist, ignoring it in peck.json
+- Rector test fail Add Closure Void Return Type Where No Return to fix it
 
 ### 💼 Other
 
@@ -51,6 +54,7 @@ All notable changes to this project will be documented in this file.
 ### 📚 Documentation
 
 - Adding git cliff for auto changelog generating
+- Update git-cliff ChangeLog
 
 ### 🧪 Testing
 
