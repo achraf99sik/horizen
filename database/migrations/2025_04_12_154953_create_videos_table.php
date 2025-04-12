@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->longText('subtitle');
+            $table->longText('media');
+            $table->longText('thumbnail');
+            $table->longText('description');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
