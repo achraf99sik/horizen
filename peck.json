@@ -8,7 +8,9 @@
             "css",
             "js",
             "nginx",
-            "dockerfile"
+            "dockerfile",
+            "playlist",
+            "playlists"
         ],
         "paths": []
     }
