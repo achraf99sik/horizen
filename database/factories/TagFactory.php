@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "name"=> $this->faker->name,
+            "video_id" => Video::factory(),
         ];
     }
 }
