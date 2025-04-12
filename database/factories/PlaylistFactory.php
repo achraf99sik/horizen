@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\User;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\playlist>
  */
-class PlaylistFactory extends Factory
+final class PlaylistFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +20,9 @@ class PlaylistFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => $this->faker->sentence,
-            "descrition" => $this->faker->paragraph,
-            "user_id" => User::factory(),
+            'title' => $this->faker->sentence,
+            'descrition' => $this->faker->paragraph,
+            'user_id' => User::factory(),
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +19,7 @@ return new class extends Migration
             $table->foreignId('nationality_id')->constrained()->onDelete('cascade');
             $table->longText('about');
             $table->date('date_birth');
-            $table->enum('sex', ['M','F'])->default('M');
+            $table->enum('sex', ['M', 'F'])->default('M');
             $table->timestamps();
         });
     }

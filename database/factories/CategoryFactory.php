@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class CategoryFactory extends Factory
+final class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +19,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            "name"=> $this->faker->word,
+            'name' => $this->faker->word,
         ];
     }
 }
