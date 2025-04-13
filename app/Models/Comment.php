@@ -16,22 +16,27 @@ final class Comment extends Model
 
     /**
      * Get the video that has the comment
+     *
      * @return BelongsTo<Video, Comment>
      */
     public function video(): BelongsTo
     {
         return $this->belongsTo(Video::class);
     }
+
     /**
      * Get the comments of the comment
+     *
      * @return HasMany<Comment, Comment>
      */
     public function comment(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(self::class);
     }
+
     /**
      * Get the commentator
+     *
      * @return BelongsTo<User, Comment>
      */
     public function user(): BelongsTo

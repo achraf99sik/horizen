@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Playlist;
-use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\playlistVideo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Nationality>
  */
-final class PlaylistVideoFactory extends Factory
+final class NationalityFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,8 +19,7 @@ final class PlaylistVideoFactory extends Factory
     public function definition(): array
     {
         return [
-            'playlist_id' => Playlist::factory(),
-            'video_id' => Video::factory(),
+            'name' => $this->faker->country,
         ];
     }
 }

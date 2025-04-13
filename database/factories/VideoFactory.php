@@ -22,10 +22,10 @@ final class VideoFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'descrition' => $this->faker->paragraph,
-            'subtitle' => $this->faker->filePath(),
-            'media' => $this->faker->filePath(),
-            'thumbnail' => $this->faker->filePath(),
+            'description' => $this->faker->paragraph,
+            'subtitle' => $this->faker->imageUrl,
+            'media' => $this->faker->imageUrl,
+            'thumbnail' => $this->faker->imageUrl,
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
         ];

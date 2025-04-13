@@ -6,28 +6,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class UserInfo extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserInfoFactory> */
     use HasFactory;
 
     /**
-     * Get user with user info
-     * @return HasOne<User, UserInfo>
+     * Get the user that owns this user info.
+     *
+     * @return BelongsTo<User, UserInfo>
      */
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->HasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Get nationality of a given user
-     * @return HasOne<Nationality, UserInfo>
+     * Get the nationality of this user.
+     *
+     * @return BelongsTo<Nationality, UserInfo>
      */
-    public function nationality(): HasOne
+    public function nationality(): BelongsTo
     {
-        return $this->HasOne(Nationality::class);
+        return $this->belongsTo(Nationality::class);
     }
 }

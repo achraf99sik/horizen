@@ -21,7 +21,7 @@ final class PlaylistFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'descrition' => $this->faker->paragraph,
+            'description' => $this->faker->paragraph,
             'user_id' => User::factory(),
         ];
     }

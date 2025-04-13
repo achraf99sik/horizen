@@ -14,10 +14,11 @@ final class Tag extends Model
     use HasFactory;
 
     /**
-     * Summary of video
-     * @return BelongsToMany<Video, Tag, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * The videos that belong to the tag.
+     *
+     * @return BelongsToMany<Video>
      */
-    public function video(): BelongsToMany
+    public function videos(): BelongsToMany
     {
         return $this->belongsToMany(Video::class);
     }
