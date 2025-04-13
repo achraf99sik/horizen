@@ -14,18 +14,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 final class CommentFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'text' => $this->faker->sentences,
+            'text' => $this->faker->sentence,
             'video_id' => Video::factory(),
-            'comment_id' => Comment::factory()->count(1),
+            'comment_id' => null,
             'user_id' => User::factory(),
         ];
     }
+
+    public function withParent(Comment $parent): static
+    {
+        return $this->state([
+            'comment_id' => $parent->id,
+        ]);
+    }
 }
+
