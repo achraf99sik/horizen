@@ -15,6 +15,7 @@ final class Like extends Model
 
     /**
      * Get the video that was liked.
+     *
      * @return BelongsTo<Video, Like>
      */
     public function video(): BelongsTo
@@ -24,6 +25,7 @@ final class Like extends Model
 
     /**
      * Get the user who gave the like.
+     *
      * @return BelongsTo<User, Like>
      */
     public function user(): BelongsTo

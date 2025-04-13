@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
-use App\Models\Comment;
 
 it('comment to array', function () {
     $comment = Comment::factory()

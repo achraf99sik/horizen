@@ -14,6 +14,7 @@ final class UserInfo extends Model
 
     /**
      * Get the user that owns this user info.
+     *
      * @return BelongsTo<User, UserInfo>
      */
     public function user(): BelongsTo
@@ -23,6 +24,7 @@ final class UserInfo extends Model
 
     /**
      * Get the nationality of this user.
+     *
      * @return BelongsTo<Nationality, UserInfo>
      */
     public function nationality(): BelongsTo
@@ -30,4 +32,3 @@ final class UserInfo extends Model
         return $this->belongsTo(Nationality::class);
     }
 }
-

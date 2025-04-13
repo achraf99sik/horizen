@@ -15,6 +15,7 @@ final class Playlist extends Model
 
     /**
      * Get the user who made this playlist
+     *
      * @return BelongsTo<User, playlist>
      */
     public function user(): BelongsTo

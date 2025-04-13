@@ -16,6 +16,7 @@ final class Video extends Model
 
     /**
      * Get the category this video belong to
+     *
      * @return BelongsTo<Category, Video>
      */
     public function category(): BelongsTo
@@ -25,16 +26,19 @@ final class Video extends Model
 
     /**
      * Get this video owner
+     *
      * @return BelongsTo<user, Video>
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(user::class);
     }
+
     public function viewer(): BelongsToMany
     {
-        return $this->belongsToMany(user::class,"watch_histories");
+        return $this->belongsToMany(user::class, 'watch_histories');
     }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);

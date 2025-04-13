@@ -27,6 +27,6 @@ test('Video relationships', function () {
 
     expect($video->user)->not()->toBeNull();
     expect($video->category)->not()->toBeNull();
-    expect($video->tags)->toBeInstanceOf(\Illuminate\Database\Eloquent\Collection::class);
-    expect($video->viewer)->toBeInstanceOf(\Illuminate\Database\Eloquent\Collection::class);
+    expect($video->tags)->toBeInstanceOf(Illuminate\Database\Eloquent\Collection::class);
+    expect($video->viewer)->toBeInstanceOf(Illuminate\Database\Eloquent\Collection::class);
 });

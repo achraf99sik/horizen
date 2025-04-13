@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class Nationality extends Model
 {
     use HasFactory;
+
     /**
      * Get all the users with this nationality
+     *
      * @return HasMany<UserInfo, Nationality>
      */
     public function userInfo(): HasMany

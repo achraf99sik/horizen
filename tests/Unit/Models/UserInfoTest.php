@@ -24,4 +24,3 @@ test('UserInfo to array', function () {
             'nationality',
         ]);
 });
-

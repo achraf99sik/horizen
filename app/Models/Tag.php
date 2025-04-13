@@ -15,6 +15,7 @@ final class Tag extends Model
 
     /**
      * The videos that belong to the tag.
+     *
      * @return BelongsToMany<Video>
      */
     public function videos(): BelongsToMany
