@@ -24,7 +24,7 @@ final class CommentFactory extends Factory
         return [
             'text' => $this->faker->sentences,
             'video_id' => Video::factory(),
-            'comment_id' => Comment::factory(),
+            'comment_id' => Comment::factory()->count(1),
             'user_id' => User::factory(),
         ];
     }
