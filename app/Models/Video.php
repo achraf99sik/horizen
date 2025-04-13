@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Video extends Model
 {
@@ -29,5 +30,9 @@ final class Video extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(user::class);
+    }
+    public function viewer(): BelongsToMany
+    {
+        return $this->belongsToMany(user::class,"watch_histories");
     }
 }
