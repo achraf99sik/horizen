@@ -7,12 +7,14 @@
 // use App\Models\Video;
 
 // test('Like to array', function () {
-//     $like = Like::factory()->has(Video::factory()->count(1))->for(User::factory()->count(1))->create()->refresh();
+//     $Video = Like::factory()->for(Video::factory()->count(1))->create()->refresh();
 
-//     expect(array_keys($like->toArray()))
+//     $User = Like::factory()->has(User::factory()->count(1))->create()->refresh();
+//     expect(array_keys($User->toArray()))
 //         ->toBe([
 //             'id',
-//             'name',
+//             'user_id',
+//             'video_id',
 //             'created_at',
 //             'updated_at',
 //         ]);
