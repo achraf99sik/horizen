@@ -35,4 +35,8 @@ final class Video extends Model
     {
         return $this->belongsToMany(user::class,"watch_histories");
     }
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

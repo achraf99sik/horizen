@@ -21,7 +21,6 @@ final class TagFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'video_id' => Video::factory(),
         ];
     }
 }
