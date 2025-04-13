@@ -15,7 +15,7 @@ final class Like extends Model
     use HasFactory;
 
     /**
-     * Get the video who owns this like
+     * Get the video that owns this like
      * @return HasOne<Video, Like>
      */
     public function video(): HasOne
