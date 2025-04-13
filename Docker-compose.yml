@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
     container_name: laravel-app
     volumes:
       - .:/var/www
@@ -18,7 +20,7 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: horizon_test
+      POSTGRES_DB: horizon
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
