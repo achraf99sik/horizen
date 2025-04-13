@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class WatchHistory extends Model
 {
@@ -14,19 +14,18 @@ final class WatchHistory extends Model
     use HasFactory;
 
     /**
-     * Get all videos in this watch history
-     * @return HasMany<Video, Like>
+     * The video associated with this watch history.
      */
-    public function video(): HasMany
+    public function video(): BelongsTo
     {
-        return $this->hasMany(Video::class);
+        return $this->belongsTo(Video::class);
     }
+
     /**
-     * Get the user who owns this watch history
-     * @return HasMany<User, Like>
+     * The user who watched the video.
      */
-    public function user(): HasMany
+    public function user(): BelongsTo
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 }
