@@ -15,19 +15,20 @@ final class Like extends Model
     use HasFactory;
 
     /**
-     * Get the video that owns this like
-     * @return HasOne<Video, Like>
+     * Get the video that was liked.
+     * @return BelongsTo<Video, Like>
      */
-    public function video(): HasOne
+    public function video(): BelongsTo
     {
-        return $this->HasOne(Video::class);
+        return $this->belongsTo(Video::class);
     }
+
     /**
-     * Get the user who give this like
+     * Get the user who gave the like.
      * @return BelongsTo<User, Like>
      */
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
