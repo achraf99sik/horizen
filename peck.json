@@ -10,7 +10,8 @@
             "nginx",
             "dockerfile",
             "playlist",
-            "playlists"
+            "playlists",
+            "infos"
         ],
         "paths": []
     }
