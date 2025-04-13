@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Nationality;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ final class UserInfoFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'nationality_id' => $this->faker->numberBetween(1, 100),
+            'nationality_id' => Nationality::factory(),
             'sex' => $this->faker->randomElement(['M', 'F']),
             'about' => $this->faker->paragraph,
             'date_birth' => $this->faker->date,
