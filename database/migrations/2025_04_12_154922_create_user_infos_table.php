@@ -18,6 +18,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('nationality_id')->constrained()->onDelete('cascade');
             $table->longText('about');
+            $table->string('phone')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('website')->nullable();
             $table->date('date_birth');
             $table->enum('sex', ['M', 'F'])->default('M');
             $table->timestamps();

@@ -13,6 +13,7 @@ it('user to array', function () {
             'name',
             'email',
             'email_verified_at',
+            'avatar',
             'role',
             'created_at',
             'updated_at',
