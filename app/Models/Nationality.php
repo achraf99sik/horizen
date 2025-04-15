@@ -15,7 +15,7 @@ final class Nationality extends Model
     /**
      * Get all the users with this nationality
      *
-     * @return HasMany<UserInfo, Nationality>
+     * @return HasMany<UserInfo, $this>
      */
     public function userInfo(): HasMany
     {

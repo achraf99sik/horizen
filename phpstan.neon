@@ -12,5 +12,5 @@ parameters:
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
-    excludePaths:
-        - app/Models
+#    excludePaths:
+#        - app/Models
