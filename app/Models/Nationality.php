@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Nationality extends Model
 {
+    /** @use HasFactory<\Database\Factories\NationalityFactory> */
     use HasFactory;
 
     /**

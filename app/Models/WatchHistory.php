@@ -15,6 +15,7 @@ final class WatchHistory extends Model
 
     /**
      * The video associated with this watch history.
+     *
      * @return BelongsTo<Video, $this>
      */
     public function video(): BelongsTo
@@ -24,6 +25,7 @@ final class WatchHistory extends Model
 
     /**
      * The user who watched the video.
+     *
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo

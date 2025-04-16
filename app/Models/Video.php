@@ -36,6 +36,7 @@ final class Video extends Model
 
     /**
      * Summary of viewer
+     *
      * @return BelongsToMany<User, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
      */
     public function viewer(): BelongsToMany
@@ -45,6 +46,7 @@ final class Video extends Model
 
     /**
      * Summary of tags
+     *
      * @return BelongsToMany<Tag, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
      */
     public function tags(): BelongsToMany

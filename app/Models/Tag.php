@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Tag extends Model
@@ -16,7 +17,7 @@ final class Tag extends Model
     /**
      * The videos that belong to the tag.
      *
-     * @return BelongsToMany<Video, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * @return BelongsToMany<Video, $this, Pivot>
      */
     public function videos(): BelongsToMany
     {

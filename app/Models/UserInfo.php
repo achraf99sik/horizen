@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class UserInfo extends Model
 {
+    /** @use HasFactory<\Database\Factories\UserInfoFactory> */
     use HasFactory;
 
     /**
