@@ -1,7 +1,7 @@
 name: Build and deploy to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: horizenstream  # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: horizen
 
 on:
   push:
