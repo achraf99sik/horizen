@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Kyojin\JWT\Facades\JWT;
 use App\Http\Resources\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Kyojin\JWT\Facades\JWT;
 
 final class AuthController extends Controller
 {
     /**
      * Summary of store
-     * @param Request $request
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -23,12 +23,12 @@ final class AuthController extends Controller
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
         ]);
 
         if ($validated->fails()) {
             return response()->json([
-                'errors' => $validated->errors()
+                'errors' => $validated->errors(),
             ], 422);
         }
 
@@ -42,31 +42,32 @@ final class AuthController extends Controller
 
         return response()->json([
             'user' => new Auth($user),
-            'token' => $token
+            'token' => $token,
         ], 201);
     }
+
     /**
      * Summary of login
-     * @param Request $request
+     *
      * @return array{token: string, user: User|mixed|\Illuminate\Http\JsonResponse}
      */
     public function login(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            "email" => "required|email|exists:users",
-            "password" => "required",
+            'email' => 'required|email|exists:users',
+            'password' => 'required',
         ]);
 
         if ($validated->fails()) {
             return response()->json([
-                'errors' => $validated->errors()
+                'errors' => $validated->errors(),
             ], 422);
         }
 
-        $user = User::where("email", $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        $user = User::where('email', $request->email)->first();
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
-                "message" => "Email or password is incorrect"
+                'message' => 'Email or password is incorrect',
             ], 401);
         }
 
@@ -74,13 +75,13 @@ final class AuthController extends Controller
 
         return response()->json([
             'user' => new Auth($user),
-            'token' => $token
+            'token' => $token,
         ], 201);
     }
 
     /**
      * Summary of show
-     * @param Request $request
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request)

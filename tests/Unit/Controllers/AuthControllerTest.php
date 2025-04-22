@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Kyojin\JWT\Facades\JWT;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,7 +19,7 @@ it('register User Token', function (): void {
     $response->assertStatus(201)
         ->assertJsonStructure([
             'user' => ['id', 'name', 'email'],
-            'token'
+            'token',
         ]);
 
     $this->assertDatabaseHas('users', [
@@ -30,12 +29,12 @@ it('register User Token', function (): void {
 
 it('data validation', function (): void {
     $response = $this->postJson('/api/user', [
-        'email' => "unvalide_data",
+        'email' => 'unvalide_data',
     ]);
 
     $response->assertStatus(422)
         ->assertJsonStructure([
-            'errors'
+            'errors',
         ]);
 });
 
@@ -46,24 +45,24 @@ it('incorrect password', function (): void {
 
     $response = $this->postJson('/api/login', [
         'email' => $user->email,
-        'password' => "wrongPass",
+        'password' => 'wrongPass',
     ]);
 
     $response->assertStatus(401)
         ->assertJsonStructure([
-            "message"
+            'message',
         ]);
 });
 
 it('login data validation', function (): void {
 
     $response = $this->postJson('/api/login', [
-        'email' => "unvalide_data",
+        'email' => 'unvalide_data',
     ]);
 
     $response->assertStatus(422)
         ->assertJsonStructure([
-            "errors"
+            'errors',
         ]);
 });
 
@@ -71,20 +70,20 @@ it('login User Token', function (): void {
     $user = UserFactory::new()->create();
 
     $request = [
-        "email" => $user->email,
-        "password" => "password",
+        'email' => $user->email,
+        'password' => 'password',
     ];
 
     $response = $this->postJson('/api/login', $request);
 
     $response->assertStatus(201)
-    ->assertJsonStructure([
-        'user',
-        'token'
-    ]);
+        ->assertJsonStructure([
+            'user',
+            'token',
+        ]);
 });
 
-it("show profile",function (): void {
+it('show profile', function (): void {
 
     $user = UserFactory::new()->create();
 
@@ -97,6 +96,6 @@ it("show profile",function (): void {
     $response->dump();
     $response->assertStatus(200)
         ->assertJsonStructure([
-            'payload'
+            'payload',
         ]);
 });
