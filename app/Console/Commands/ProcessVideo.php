@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use FFMpeg\Format\Video\X264;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class ProcessVideo extends Command
@@ -34,11 +36,22 @@ class ProcessVideo extends Command
         FFMpeg::fromDisk('uploads')
             ->open('steve_howe.mp4')
             ->exportForHLS()
-            ->setSegmentLength(10)
-            ->setKeyFrameInterval(48)
-            ->addFormat($lowBitrate)
-            ->addFormat($midBitrate)
-            ->addFormat($highBitrate)
+            ->withRotatingEncryptionKey(function ($filename, $contents)  {
+                Storage::disk("uploads")->put("video-one/secrets/{$filename}/",$contents);
+            })
+            ->addFormat($lowBitrate, function (HLSVideoFilters $filters) {
+                $filters->resize(480, 360);
+            })
+            ->addFormat($midBitrate, function (HLSVideoFilters $filters) {
+                $filters->resize(1280, 720);
+            })
+            ->addFormat($highBitrate, function (HLSVideoFilters $filters) {
+                $filters->resize(1920, 1080);
+            })
+            ->onProgress(function ($progress){
+                $this->info("Progress: {$progress}%");
+            })
+            ->toDisk("uploads")
             ->save('adaptive_steve.m3u8');
     }
 }
