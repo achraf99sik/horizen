@@ -89,8 +89,7 @@ final class AuthController extends Controller
         $payload = JWT::decode($token);
 
         return response()->json([
-            'user' => Auth::user(),
             'payload' => $payload,
-        ]);
+        ], 200);
     }
 }

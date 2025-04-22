@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Kyojin\JWT\Facades\JWT;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -83,4 +84,19 @@ it('login User Token', function (): void {
     ]);
 });
 
+it("show profile",function (): void {
 
+    $user = UserFactory::new()->create();
+
+    $token = $user->createToken();
+
+    $response = $this->withHeaders([
+        'Authorization' => "Bearer {$token}",
+    ])->getJson('/api/profile');
+
+    $response->dump();
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'payload'
+        ]);
+});
