@@ -14,14 +14,6 @@ use Illuminate\Support\Facades\Validator;
 final class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Summary of store
      * @param Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
@@ -100,21 +92,5 @@ final class AuthController extends Controller
             'user' => Auth::user(),
             'payload' => $payload,
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
