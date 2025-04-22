@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Kyojin\JWT\Facades\JWT;
 use App\Http\Resources\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,11 +87,19 @@ final class AuthController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Summary of show
+     * @param Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        $token = $request->bearerToken();
+        $payload = JWT::decode($token);
+
+        return response()->json([
+            'user' => Auth::user(),
+            'payload' => $payload,
+        ]);
     }
 
     /**
