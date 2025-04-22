@@ -8,7 +8,8 @@ use App\Http\Controllers\AuthController;
 
 Route::apiResource('user', AuthController::class);
 
+Route::post('login', [AuthController::class, 'login']);
+
 Route::middleware('jwt')->group(function () {
     Route::get('profile', [AuthController::class, 'show']);
 });
-Route::post('login', [AuthController::class, 'login']);
