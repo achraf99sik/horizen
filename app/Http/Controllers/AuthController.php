@@ -21,23 +21,61 @@ final class AuthController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Summary of store
+     * @param Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6'
         ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'errors' => $validated->errors()
+            ], 422);
         }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $token = $user->createToken();
+
+        return response()->json([
+            'user' => new Auth($user),
+            'token' => $token
+        ], 201);
+    }
+    /**
+     * Summary of login
+     * @param Request $request
+     * @return array{token: string, user: User|mixed|\Illuminate\Http\JsonResponse}
+     */
+    public function login(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            "email" => "required|email|exists:users",
+            "password" => "required",
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'errors' => $validated->errors()
+            ], 422);
+        }
+
+        $user = User::where("email", $request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                "message" => "Email or password is incorect"
+            ], 401);
+        }
 
         $token = $user->createToken();
 
