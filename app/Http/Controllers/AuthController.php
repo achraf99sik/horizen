@@ -15,7 +15,7 @@ final class AuthController extends Controller
 {
     /**
      * Summary of store
-     *
+     * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -48,8 +48,8 @@ final class AuthController extends Controller
 
     /**
      * Summary of login
-     *
-     * @return array{token: string, user: User|mixed|\Illuminate\Http\JsonResponse}
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
@@ -81,7 +81,7 @@ final class AuthController extends Controller
 
     /**
      * Summary of show
-     *
+     * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
