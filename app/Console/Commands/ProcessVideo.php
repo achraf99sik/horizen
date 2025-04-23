@@ -34,7 +34,7 @@ class ProcessVideo extends Command
         $highBitrate = (new X264)->setKiloBitrate(1000);
 
         FFMpeg::fromDisk('uploads')
-            ->open('steve_howe.mp4')
+            ->open('video-one/raw/video.mp4')
             ->exportForHLS()
             ->withRotatingEncryptionKey(function ($filename, $contents)  {
                 Storage::disk("uploads")->put("video-one/secrets/{$filename}/",$contents);
@@ -52,6 +52,6 @@ class ProcessVideo extends Command
                 $this->info("Progress: {$progress}%");
             })
             ->toDisk("uploads")
-            ->save('adaptive_steve.m3u8');
+            ->save('video-one/videos/index.m3u8');
     }
 }
