@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class VideoController extends Controller
@@ -41,6 +42,14 @@ class VideoController extends Controller
             ->setPlaylistUrlResolver(function ($filename) {
                 return route("video.playlist",["folder" => $this->folder, "file" => $filename]);
             });
+    }
+    public function getKey($folder, $key)
+    {
+        return Storage::disk("uploads")->download($folder . "/secrets/" . $key);
+    }
+    public function getFile($folder, $file)
+    {
+        return Storage::disk("uploads")->download($folder . "/videos/" . $file);
     }
 
     /**
