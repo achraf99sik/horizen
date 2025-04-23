@@ -27,12 +27,20 @@ class VideoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $slug)
+    public function videoDetails($slug)
+    {
+        $video = (object) [
+            "title"=>"lharbaaaaa",
+            "slug" => $slug
+        ];
+        return view("details", compact("video"));
+    }
+    public function show($slug, $filename)
     {
         $this->folder = $slug;
         return FFMpeg::dynamicHLSPlaylist("uploads")
             ->fromDisk("uploads")
-            ->open("{$this->folder}/index.m3u8")
+            ->open("{$this->folder}/videos/{$filename}")
             ->setKeyUrlResolver(function ($key) {
                 return route("video.key",["folder" => $this->folder, "key" => $key]);
             })

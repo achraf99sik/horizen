@@ -5,12 +5,12 @@ declare(strict_types=1);
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
-
+Route::get("{slug}", [VideoController::class, "videoDetails"]);
 Route::prefix("uploads")->group(function(){
-    Route::get("playlist/{folder}", [VideoController::class,"getVideo"])
+    Route::get("playlist/{folder}/{file}", [VideoController::class,"show"])
         ->name("video.playlist");
     Route::get("video/{folder}/{file}", [VideoController::class, "getFile"])
         ->name("video.file");
