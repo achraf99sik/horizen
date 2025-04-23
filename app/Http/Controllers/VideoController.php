@@ -8,6 +8,7 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class VideoController extends Controller
 {
+    private $folder;
     /**
      * Display a listing of the resource.
      */
