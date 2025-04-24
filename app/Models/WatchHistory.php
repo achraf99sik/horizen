@@ -14,7 +14,9 @@ final class WatchHistory extends Model
     use HasFactory;
 
     /**
-     * The video associated with this watch history.
+     * Summary of video
+     *
+     * @return BelongsTo<Video, $this>
      */
     public function video(): BelongsTo
     {
@@ -22,7 +24,9 @@ final class WatchHistory extends Model
     }
 
     /**
-     * The user who watched the video.
+     * Summary of user
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

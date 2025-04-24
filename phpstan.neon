@@ -13,4 +13,5 @@ parameters:
 #        - '#PHPDoc tag @var#'
 #
     excludePaths:
-        - app/Models
+        - app/Models/Tag.php
+        - app/Models/Video.php

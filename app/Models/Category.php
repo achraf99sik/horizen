@@ -16,7 +16,7 @@ final class Category extends Model
     /**
      * Get videos with this category
      *
-     * @return HasMany<Video, Category>
+     * @return HasMany<Video, $this>
      */
     public function video(): HasMany
     {

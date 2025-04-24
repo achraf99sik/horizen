@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class UserInfo extends Model
 {
+    /** @use HasFactory<\Database\Factories\UserInfoFactory> */
     use HasFactory;
 
     /**
      * Get the user that owns this user info.
      *
-     * @return BelongsTo<User, UserInfo>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -25,7 +26,7 @@ final class UserInfo extends Model
     /**
      * Get the nationality of this user.
      *
-     * @return BelongsTo<Nationality, UserInfo>
+     * @return BelongsTo<Nationality, $this>
      */
     public function nationality(): BelongsTo
     {

@@ -17,7 +17,7 @@ final class Comment extends Model
     /**
      * Get the video that has the comment
      *
-     * @return BelongsTo<Video, Comment>
+     * @return BelongsTo<Video, $this>
      */
     public function video(): BelongsTo
     {
@@ -27,7 +27,7 @@ final class Comment extends Model
     /**
      * Get the comments of the comment
      *
-     * @return HasMany<Comment, Comment>
+     * @return HasMany<Comment, $this>
      */
     public function comment(): HasMany
     {
@@ -37,7 +37,7 @@ final class Comment extends Model
     /**
      * Get the commentator
      *
-     * @return BelongsTo<User, Comment>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
