@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Video extends Model
@@ -17,7 +18,7 @@ final class Video extends Model
     /**
      * Get the category this video belong to
      *
-     * @return BelongsTo<Category, Video>
+     * @return BelongsTo<Category, $this>
      */
     public function category(): BelongsTo
     {
@@ -27,18 +28,26 @@ final class Video extends Model
     /**
      * Get this video owner
      *
-     * @return BelongsTo<user, Video>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(user::class);
+        return $this->belongsTo(User::class);
     }
 
+    /**
+     * Summary of viewer
+     * @return BelongsToMany<User, $this>
+     */
     public function viewer(): BelongsToMany
     {
-        return $this->belongsToMany(user::class, 'watch_histories');
+        return $this->belongsToMany(User::class, 'watch_histories');
     }
 
+    /**
+     * Summary of tags
+     * @return BelongsToMany<Tag, $this>
+     */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
