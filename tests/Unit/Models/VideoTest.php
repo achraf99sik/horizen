@@ -13,6 +13,7 @@ test('Video to array', function () {
             'title',
             'subtitle',
             'media',
+            'slug',
             'thumbnail',
             'description',
             'user_id',
