@@ -22,4 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 /coverage
-/storage/uploads
+/storage/uploads/*
+!/storage/uploads/.gitkeep
