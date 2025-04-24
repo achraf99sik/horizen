@@ -25,6 +25,7 @@ final class VideoFactory extends Factory
             'description' => $this->faker->paragraph,
             'subtitle' => $this->faker->imageUrl,
             'media' => $this->faker->imageUrl,
+            'slug' => $this->faker->randomAscii,
             'thumbnail' => $this->faker->imageUrl,
             'user_id' => User::factory(),
             'category_id' => Category::factory(),

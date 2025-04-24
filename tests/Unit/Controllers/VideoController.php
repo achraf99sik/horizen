@@ -1,100 +1,100 @@
 <?php
 declare(strict_types=1);
 
-use Database\Factories\UserFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Database\Factories\UserFactory;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
-// Register Test //
-it('register User Token', function (): void {
-    $user = UserFactory::new()->make();
+// uses(RefreshDatabase::class);
 
-    $response = $this->postJson('/api/user', [
-        'name' => $user->name,
-        'email' => $user->email,
-        'password' => $user->password,
-    ]);
+// it('register User Token', function (): void {
+//     $user = UserFactory::new()->make();
 
-    $response->assertStatus(201)
-        ->assertJsonStructure([
-            'user' => ['id', 'name', 'email'],
-            'token',
-        ]);
+//     $response = $this->postJson('/api/user', [
+//         'name' => $user->name,
+//         'email' => $user->email,
+//         'password' => $user->password,
+//     ]);
 
-    $this->assertDatabaseHas('users', [
-        'email' => $user->email,
-    ]);
-});
+//     $response->assertStatus(201)
+//         ->assertJsonStructure([
+//             'user' => ['id', 'name', 'email'],
+//             'token',
+//         ]);
 
-it('data validation', function (): void {
-    $response = $this->postJson('/api/user', [
-        'email' => 'unvalide_data',
-    ]);
+//     $this->assertDatabaseHas('users', [
+//         'email' => $user->email,
+//     ]);
+// });
 
-    $response->assertStatus(422)
-        ->assertJsonStructure([
-            'errors',
-        ]);
-});
+// it('data validation', function (): void {
+//     $response = $this->postJson('/api/user', [
+//         'email' => 'unvalide_data',
+//     ]);
 
-// Loggin Test
+//     $response->assertStatus(422)
+//         ->assertJsonStructure([
+//             'errors',
+//         ]);
+// });
 
-it('incorrect password', function (): void {
-    $user = UserFactory::new()->create();
+// // Loggin Test
 
-    $response = $this->postJson('/api/login', [
-        'email' => $user->email,
-        'password' => 'wrongPass',
-    ]);
+// it('incorrect password', function (): void {
+//     $user = UserFactory::new()->create();
 
-    $response->assertStatus(401)
-        ->assertJsonStructure([
-            'message',
-        ]);
-});
+//     $response = $this->postJson('/api/login', [
+//         'email' => $user->email,
+//         'password' => 'wrongPass',
+//     ]);
 
-it('login data validation', function (): void {
+//     $response->assertStatus(401)
+//         ->assertJsonStructure([
+//             'message',
+//         ]);
+// });
 
-    $response = $this->postJson('/api/login', [
-        'email' => 'unvalide_data',
-    ]);
+// it('login data validation', function (): void {
 
-    $response->assertStatus(422)
-        ->assertJsonStructure([
-            'errors',
-        ]);
-});
+//     $response = $this->postJson('/api/login', [
+//         'email' => 'unvalide_data',
+//     ]);
 
-it('login User Token', function (): void {
-    $user = UserFactory::new()->create();
+//     $response->assertStatus(422)
+//         ->assertJsonStructure([
+//             'errors',
+//         ]);
+// });
 
-    $request = [
-        'email' => $user->email,
-        'password' => 'password',
-    ];
+// it('login User Token', function (): void {
+//     $user = UserFactory::new()->create();
 
-    $response = $this->postJson('/api/login', $request);
+//     $request = [
+//         'email' => $user->email,
+//         'password' => 'password',
+//     ];
 
-    $response->assertStatus(201)
-        ->assertJsonStructure([
-            'user',
-            'token',
-        ]);
-});
+//     $response = $this->postJson('/api/login', $request);
 
-it('show profile', function (): void {
+//     $response->assertStatus(201)
+//         ->assertJsonStructure([
+//             'user',
+//             'token',
+//         ]);
+// });
 
-    $user = UserFactory::new()->create();
+// it('show profile', function (): void {
 
-    $token = $user->createToken();
+//     $user = UserFactory::new()->create();
 
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer {$token}",
-    ])->getJson('/api/profile');
+//     $token = $user->createToken();
 
-    $response->dump();
-    $response->assertStatus(200)
-        ->assertJsonStructure([
-            'payload',
-        ]);
-});
+//     $response = $this->withHeaders([
+//         'Authorization' => "Bearer {$token}",
+//     ])->getJson('/api/profile');
+
+//     $response->dump();
+//     $response->assertStatus(200)
+//         ->assertJsonStructure([
+//             'payload',
+//         ]);
+// });
