@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Http\File;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Console\Command;
+use Illuminate\Http\UploadedFile;
+use Psr\Http\Message\StreamInterface;
 use Illuminate\Support\Facades\Storage;
-use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 
 class ProcessVideo extends Command
 {
@@ -26,8 +29,9 @@ class ProcessVideo extends Command
 
     /**
      * Execute the console command.
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $lowBitrate = (new X264)->setKiloBitrate(250);
         $midBitrate = (new X264)->setKiloBitrate(500);
@@ -36,7 +40,7 @@ class ProcessVideo extends Command
         FFMpeg::fromDisk('uploads')
             ->open('video-one/raw/video.mp4')
             ->exportForHLS()
-            ->withRotatingEncryptionKey(function ($filename, $contents)  {
+            ->withRotatingEncryptionKey(function (string $filename, StreamInterface|File|UploadedFile|string $contents)  {
                 Storage::disk("uploads")->put("video-one/secrets/{$filename}/",$contents);
             })
             ->addFormat($lowBitrate, function (HLSVideoFilters $filters) {
@@ -48,7 +52,7 @@ class ProcessVideo extends Command
             ->addFormat($highBitrate, function (HLSVideoFilters $filters) {
                 $filters->resize(1920, 1080);
             })
-            ->onProgress(function ($progress){
+            ->onProgress(function (string $progress){
                 $this->info("Progress: {$progress}%");
             })
             ->toDisk("uploads")
