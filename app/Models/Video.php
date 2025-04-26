@@ -13,6 +13,16 @@ final class Video extends Model
 {
     /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
+    protected $fillable = [
+        'title',
+        'subtitle',
+        'media',
+        'slug',
+        'thumbnail',
+        'description',
+        'user_id',
+        'category_id',
+    ];
 
     /**
      * Get the category this video belong to

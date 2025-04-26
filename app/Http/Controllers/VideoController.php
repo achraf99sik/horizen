@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Video;
+use App\Models\Category;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Services\FileUploadService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
@@ -15,18 +22,73 @@ class VideoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     //
-    // }
+    public function index()
+    {
+        $users = User::all();
+        $categories = Category::all();
+        return view('videos.create', compact('users', 'categories'));
+    }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+            'category_id' => 'required|integer|exists:categories,id',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string',
+            'media' => 'required|string',
+            'slug' => 'required|video|mimes:mp4,mkv|max:2048000',
+            'thumbnail' => 'required|string',
+            'description' => 'required|string|max:1000',
+        ]);
+        /** @var UploadedFile $original */
+        $original = $request->file('slug');
+
+        $customFile = new FileUploadService(
+            $original->getPathname(),
+            $original->getClientOriginalName(),
+            $original->getMimeType(),
+            $original->getError(),
+            false
+        );
+
+        $slug = $customFile->store('raw', 'uploads');
+
+        // $slug = $request->file('slug')->store('raw','uploads');
+        dd($slug);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        try {
+            $video = Video::create([
+                'title' => $request->title,
+                'subtitle' => $request->subtitle,
+                'media' => $request->media,
+                'slug' => $request->slug,
+                'thumbnail' => $request->thumbnail,
+                'description' => $request->description,
+                'user_id' => $request->user_id,
+                'category_id' => $request->category_id,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Video created successfully',
+                'video' => $video
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
 
     /**
      * Summary of videoDetails

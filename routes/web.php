@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home', function () {
     return view('welcome');
 });
-Route::get("{slug}", [VideoController::class, "videoDetails"]);
+Route::get("watch/{slug}", [VideoController::class, "videoDetails"]);
+Route::get("upload", [VideoController::class, "index"]);
+Route::post("upload", [VideoController::class, "store"])
+    ->name("videos.store");
 Route::prefix("uploads")->group(function(){
     Route::get("playlist/{folder}/{file}", [VideoController::class,"show"])
         ->name("video.playlist");
