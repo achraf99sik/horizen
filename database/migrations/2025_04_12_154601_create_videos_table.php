@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('subtitle');
-            $table->longText('media');
             $table->longText('slug');
             $table->longText('thumbnail');
             $table->longText('description');

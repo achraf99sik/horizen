@@ -39,8 +39,7 @@ class VideoController extends Controller
             'category_id' => 'required|integer|exists:categories,id',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string',
-            'media' => 'required|string',
-            'slug' => 'required|video|mimes:mp4,mkv|max:2048000',
+            'media' => 'required|file|mimes:mp4,avi,mpeg|max:2048000',
             'thumbnail' => 'required|string',
             'description' => 'required|string|max:1000',
         ]);
@@ -55,10 +54,7 @@ class VideoController extends Controller
             false
         );
 
-        $slug = $customFile->store('raw', 'uploads');
-
-        // $slug = $request->file('slug')->store('raw','uploads');
-        dd($slug);
+        $media = $customFile->store('raw', 'uploads');
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -68,8 +64,7 @@ class VideoController extends Controller
             $video = Video::create([
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
-                'media' => $request->media,
-                'slug' => $request->slug,
+                'slug' => $media,
                 'thumbnail' => $request->thumbnail,
                 'description' => $request->description,
                 'user_id' => $request->user_id,

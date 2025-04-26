@@ -16,7 +16,6 @@ final class Video extends Model
     protected $fillable = [
         'title',
         'subtitle',
-        'media',
         'slug',
         'thumbnail',
         'description',

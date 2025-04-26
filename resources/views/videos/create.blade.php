@@ -8,10 +8,7 @@
     <textarea name="subtitle" id="subtitle" required></textarea>
 
     <label for="media">Media URL</label>
-    <input type="text" name="media" id="media" required>
-
-    <label for="slug">Slug</label>
-    <input type="file" name="slug" id="slug" required>
+    <input type="file" name="media" id="media" required>
 
     <label for="thumbnail">Thumbnail URL</label>
     <input type="text" name="thumbnail" id="thumbnail" required>
