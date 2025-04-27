@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Nationality extends Model
 {
+    /** @use HasFactory<\Database\Factories\NationalityFactory> */
     use HasFactory;
 
     /**
      * Get all the users with this nationality
      *
-     * @return HasMany<UserInfo, Nationality>
+     * @return HasMany<UserInfo, $this>
      */
     public function userInfo(): HasMany
     {

@@ -16,7 +16,7 @@ final class Tag extends Model
     /**
      * The videos that belong to the tag.
      *
-     * @return BelongsToMany<Video>
+     * @phpstan-return BelongsToMany<Video, Tag>
      */
     public function videos(): BelongsToMany
     {
