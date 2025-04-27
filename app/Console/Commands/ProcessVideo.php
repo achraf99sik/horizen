@@ -18,7 +18,7 @@ class ProcessVideo extends Command
      *
      * @var string
      */
-    protected $signature = 'video:process';
+    protected $signature = 'video:process {folder} {file}';
 
     /**
      * The console command description.
@@ -33,15 +33,19 @@ class ProcessVideo extends Command
      */
     public function handle(): void
     {
+        set_time_limit(0);
+        $folder = $this->argument('folder');
+        $file = $this->argument('file');
+
         $lowBitrate = (new X264)->setKiloBitrate(250);
         $midBitrate = (new X264)->setKiloBitrate(500);
         $highBitrate = (new X264)->setKiloBitrate(1000);
 
         FFMpeg::fromDisk('uploads')
-            ->open('video-one/raw/video.mp4')
+            ->open("{$folder}/raw/{$file}")
             ->exportForHLS()
-            ->withRotatingEncryptionKey(function (string $filename, StreamInterface|File|UploadedFile|string $contents)  {
-                Storage::disk("uploads")->put("video-one/secrets/{$filename}/",$contents);
+            ->withRotatingEncryptionKey(function (string $filename, StreamInterface|File|UploadedFile|string $contents) use ($folder)  {
+                Storage::disk("uploads")->put("{$folder}/secrets/{$filename}/",$contents);
             })
             ->addFormat($lowBitrate, function (HLSVideoFilters $filters) {
                 $filters->resize(480, 360);
@@ -53,9 +57,9 @@ class ProcessVideo extends Command
                 $filters->resize(1920, 1080);
             })
             ->onProgress(function (string $progress){
-                $this->info("Progress: {$progress}%");
+                return $this->info("Progress: {$progress}%");
             })
             ->toDisk("uploads")
-            ->save('video-one/videos/index.m3u8');
+            ->save("{$folder}/videos/index.m3u8");
     }
 }

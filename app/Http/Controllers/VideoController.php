@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Category;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Services\FileUploadService;
@@ -39,12 +40,14 @@ class VideoController extends Controller
             'category_id' => 'required|integer|exists:categories,id',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string',
-            'media' => 'required|file|mimes:mp4,avi,mpeg|max:2048000',
+            'media' => 'required|file|mimes:mp4,avi,mpeg,mkv|max:2048000',
             'thumbnail' => 'required|string',
             'description' => 'required|string|max:1000',
         ]);
+
+
         /** @var UploadedFile $original */
-        $original = $request->file('slug');
+        $original = $request->file('media');
 
         $customFile = new FileUploadService(
             $original->getPathname(),
@@ -60,11 +63,17 @@ class VideoController extends Controller
             throw new ValidationException($validator);
         }
 
+        $progress = Artisan::call("video:process", [
+            'folder' => $media['folder'],
+            'file' => $media['file'],
+        ]);
+        dd($progress);
+        // dd($media);
         try {
             $video = Video::create([
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
-                'slug' => $media,
+                'slug' => $media['folder'],
                 'thumbnail' => $request->thumbnail,
                 'description' => $request->description,
                 'user_id' => $request->user_id,
