@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Category;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
+use App\Jobs\ProcessVideo;
 use Illuminate\Http\Request;
-use App\Services\FileUploadService;
 use Illuminate\Http\UploadedFile;
+use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -63,11 +63,7 @@ class VideoController extends Controller
             throw new ValidationException($validator);
         }
 
-        $progress = Artisan::call("video:process", [
-            'folder' => $media['folder'],
-            'file' => $media['file'],
-        ]);
-        dd($progress);
+        ProcessVideo::dispatch($media['folder'], $media['file']);
         // dd($media);
         try {
             $video = Video::create([
