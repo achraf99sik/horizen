@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Auth;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,10 +16,8 @@ final class AuthController extends Controller
 {
     /**
      * Summary of store
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -31,11 +30,12 @@ final class AuthController extends Controller
                 'errors' => $validated->errors(),
             ], 422);
         }
+        $password = is_string($request->password) ? (string) $request->password : '';
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
         ]);
 
         $token = $user->createToken();
@@ -48,10 +48,8 @@ final class AuthController extends Controller
 
     /**
      * Summary of login
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $validated = Validator::make($request->all(), [
             'email' => 'required|email|exists:users',
@@ -65,7 +63,8 @@ final class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        $password = is_string($request->password) ? (string) $request->password : '';
+        if (! $user || ! Hash::check($password, $user->password)) {
             return response()->json([
                 'message' => 'Email or password is incorrect',
             ], 401);
@@ -79,14 +78,9 @@ final class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     * Summary of show
-     * @param \Illuminate\Http\Request $request
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function show(Request $request)
+    public function show(Request $request): JsonResponse
     {
-        $token = $request->bearerToken();
+        $token = (string) $request->bearerToken();
         $payload = JWT::decode($token);
 
         return response()->json([
