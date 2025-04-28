@@ -2,10 +2,22 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NationalityController;
+use App\Http\Controllers\PlaylistController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WatchHistoryController;
 
 Route::apiResource('user', AuthController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('comments', CommentController::class);
+Route::apiResource('nationalities', NationalityController::class);
+Route::apiResource('playlist', PlaylistController::class);
+Route::apiResource('tags', TagController::class);
+Route::apiResource('history', WatchHistoryController::class);
 
 Route::post('login', [AuthController::class, 'login']);
 
