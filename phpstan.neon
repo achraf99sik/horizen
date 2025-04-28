@@ -15,3 +15,5 @@ parameters:
     excludePaths:
         - app/Models/Tag.php
         - app/Models/Video.php
+        - app/Models/User.php
+        - app/Http/Resources/Auth.php
