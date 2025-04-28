@@ -51,11 +51,45 @@ class PlaylistController extends Controller
                 'status' => true,
                 'message' => 'Playlist created successfully',
                 'data' => $playlist,
-            ], 201); // 201 = Created
+            ], 201);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, Playlist $playlist)
+    {
+        try {
+            $validated = Validator::make($request->all(), [
+                'title' => 'sometimes|required|string|max:255',
+                'description' => 'sometimes|required|string',
+                'user_id' => 'sometimes|required|exists:users,id',
+            ]);
+
+            if ($validated->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validated->errors()
+                ], 422);
+            }
+
+            $playlist->update($request->only(['title', 'description', 'user_id']));
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Playlist updated successfully',
+                'data' => $playlist
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Server error',
                 'error' => $th->getMessage(),
             ], 500);
         }
