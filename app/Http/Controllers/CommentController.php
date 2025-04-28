@@ -34,7 +34,10 @@ class CommentController extends Controller
             $validatedComment = Validator::make(
                 $request->all(),
                 [
-                    'name' => 'required|string|max:50',
+                    'text' => 'required|string|max:1024',
+                    'video_id' => 'required|exists:videos,id|integer',
+                    'comment_id' => 'exists:comments,id|integer',
+                    'user_id' => 'required|exists:users,id|integer'
                 ]
             );
             if ($validatedComment->fails()) {
@@ -46,7 +49,10 @@ class CommentController extends Controller
             }
 
             $comment = Comment::create([
-                'name' => $request->name,
+                'text' => $request->text,
+                'video_id' => $request->video_id,
+                'comment_id' => $request->comment_id,
+                'user_id' => $request->user_id
             ]);
             return response()->json([
                 'status' => true,
@@ -87,7 +93,24 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        $comment->update($request->all());
+        $validatedComment = Validator::make(
+            $request->all(),
+            [
+                'text' => 'string|max:1024',
+                'comment_id' => 'exists:comments,id|integer',
+            ]
+        );
+        if ($validatedComment->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validatedComment->errors()
+            ], 401);
+        }
+        $comment->update([
+            'text' => $request->text,
+            'comment_id' => $request->comment_id,
+        ]);
         return response()->json([
             'status' => true,
             'message' => 'Comment updated successfully',
