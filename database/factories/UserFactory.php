@@ -29,6 +29,8 @@ final class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => self::$password ??= Hash::make('password'),
+            'role' => fake()->randomElement(['admin', 'creator', 'user']),
+
         ];
     }
 

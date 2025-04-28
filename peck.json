@@ -11,10 +11,11 @@
             "dockerfile",
             "playlist",
             "playlists",
-            "infos"
+            "infos",
+            "api"
         ],
         "paths": [
-            "storage/uploads"
+            "storage\/uploads"
         ]
     }
 }
