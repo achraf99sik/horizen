@@ -100,7 +100,7 @@ class VideoController extends Controller
      */
     public function videoDetails(string $slug): View
     {
-        $video = (object) Video::whereSlug($slug)->first();
+        $video = (object) Video::whereSlug($slug)->with("user")->first();
         return view("details", compact("video"));
     }
     /**
