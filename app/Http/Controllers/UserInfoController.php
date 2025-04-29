@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\UserInfo;
+use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,7 +36,6 @@ class UserInfoController extends Controller
     {
         try {
             $validated = Validator::make($request->all(), [
-                'user_id' => 'required|exists:users,id|integer',
                 'nationality_id' => 'required|exists:nationalities,id|integer',
                 'about' => 'required|string',
                 'date_birth' => 'required|date',
@@ -49,9 +49,11 @@ class UserInfoController extends Controller
                     'errors' => $validated->errors()
                 ], 422);
             }
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
 
             $userInfo = UserInfo::create([
-                'user_id' => $request->user_id,
+                'user_id' => $payload['id'],
                 'nationality_id' => $request->nationality_id,
                 'about' => $request->about,
                 'date_birth' => $request->date_birth,

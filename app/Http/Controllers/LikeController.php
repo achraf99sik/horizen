@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,8 +35,7 @@ class LikeController extends Controller
             $validatedlike = Validator::make(
                 $request->all(),
                 [
-                    'video_id' => 'required|exists:videos,id|integer',
-                    'user_id' => 'required|exists:users,id|integer',
+                    'video_id' => 'required|exists:videos,id|integer'
                 ]
             );
             if ($validatedlike->fails()) {
@@ -46,9 +46,12 @@ class LikeController extends Controller
                 ], 401);
             }
 
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
+
             $like = Like::create([
                 'video_id' => $request->video_id,
-                'user_id' => $request->user_id,
+                'user_id' => $payload['id'],
             ]);
             return response()->json([
                 'status' => true,

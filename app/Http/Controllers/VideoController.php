@@ -7,6 +7,7 @@ use App\Models\Video;
 use App\Models\Category;
 use Illuminate\View\View;
 use App\Jobs\ProcessVideo;
+use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Services\FileUploadService;
@@ -36,7 +37,6 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer|exists:users,id',
             'category_id' => 'required|integer|exists:categories,id',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string',
@@ -64,15 +64,18 @@ class VideoController extends Controller
         }
 
         ProcessVideo::dispatch($media['folder'], $media['file']);
-        // dd($media);
+
         try {
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
+
             $video = Video::create([
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
                 'slug' => $media['folder'],
                 'thumbnail' => $request->thumbnail,
                 'description' => $request->description,
-                'user_id' => $request->user_id,
+                'user_id' => $payload['id'],
                 'category_id' => $request->category_id,
             ]);
 

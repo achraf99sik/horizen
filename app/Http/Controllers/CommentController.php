@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Kyojin\JWT\Facades\JWT;
 
 class CommentController extends Controller
 {
@@ -36,8 +37,7 @@ class CommentController extends Controller
                 [
                     'text' => 'required|string|max:1024',
                     'video_id' => 'required|exists:videos,id|integer',
-                    'comment_id' => 'exists:comments,id|integer',
-                    'user_id' => 'required|exists:users,id|integer'
+                    'comment_id' => 'exists:comments,id|integer'
                 ]
             );
             if ($validatedComment->fails()) {
@@ -48,11 +48,14 @@ class CommentController extends Controller
                 ], 401);
             }
 
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
+
             $comment = Comment::create([
                 'text' => $request->text,
                 'video_id' => $request->video_id,
                 'comment_id' => $request->comment_id,
-                'user_id' => $request->user_id
+                'user_id' => $payload['id']
             ]);
             return response()->json([
                 'status' => true,

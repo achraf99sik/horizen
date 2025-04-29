@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Playlist;
+use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,8 +30,7 @@ class PlaylistController extends Controller
         try {
             $validated = Validator::make($request->all(), [
                 'title' => 'required|string|max:255',
-                'description' => 'required|string',
-                'user_id' => 'required|exists:users,id|integer',
+                'description' => 'required|string'
             ]);
 
             if ($validated->fails()) {
@@ -41,10 +41,13 @@ class PlaylistController extends Controller
                 ], 422);
             }
 
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
+
             $playlist = Playlist::create([
                 'title' => $request->title,
                 'description' => $request->description,
-                'user_id' => $request->user_id,
+                'user_id' => $payload['id'],
             ]);
 
             return response()->json([
@@ -67,7 +70,6 @@ class PlaylistController extends Controller
             $validated = Validator::make($request->all(), [
                 'title' => 'sometimes|required|string|max:255',
                 'description' => 'sometimes|required|string',
-                'user_id' => 'sometimes|required|exists:users,id',
             ]);
 
             if ($validated->fails()) {
@@ -78,7 +80,7 @@ class PlaylistController extends Controller
                 ], 422);
             }
 
-            $playlist->update($request->only(['title', 'description', 'user_id']));
+            $playlist->update($request->only(['title', 'description']));
 
             return response()->json([
                 'status' => true,

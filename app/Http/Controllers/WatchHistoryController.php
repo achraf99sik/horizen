@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use Kyojin\JWT\Facades\JWT;
 use App\Models\WatchHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,6 @@ class WatchHistoryController extends Controller
     {
         try {
             $validated = Validator::make($request->all(), [
-                'user_id' => 'required|exists:users,id',
                 'video_id' => 'required|exists:videos,id',
             ]);
 
@@ -41,8 +41,11 @@ class WatchHistoryController extends Controller
                 ], 422);
             }
 
+            $token = (string) $request->bearerToken();
+            $payload = JWT::decode($token);
+
             $watchHistory = WatchHistory::create([
-                'user_id' => $request->user_id,
+                'user_id' => $payload['id'],
                 'video_id' => $request->video_id,
             ]);
 
@@ -74,7 +77,6 @@ class WatchHistoryController extends Controller
     {
         try {
             $validated = Validator::make($request->all(), [
-                'user_id' => 'sometimes|exists:users,id',
                 'video_id' => 'sometimes|exists:videos,id',
             ]);
 
@@ -86,7 +88,7 @@ class WatchHistoryController extends Controller
                 ], 422);
             }
 
-            $watchHistory->update($request->only(['user_id', 'video_id']));
+            $watchHistory->update($request->only(['video_id']));
 
             return response()->json([
                 'status' => true,
