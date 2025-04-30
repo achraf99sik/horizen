@@ -8,10 +8,10 @@
     <textarea name="subtitle" id="subtitle" required></textarea>
 
     <label for="media">Media URL</label>
-    <input type="file" name="media" id="media" required>
+    <input type="file" accept=".mp4,.avi,.mpeg,.mkv" name="media" id="media" required>
 
     <label for="thumbnail">Thumbnail URL</label>
-    <input type="text" name="thumbnail" id="thumbnail" required>
+    <input type="file" accept=".jpg,.gif,.png,.jpeg" name="thumbnail" id="thumbnail" required>
 
     <label for="description">Description</label>
     <textarea name="description" id="description" required></textarea>

@@ -28,9 +28,10 @@ class VideoController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
+        ////////////////////// THIS IS THE HOME PAGE DATA ////////////////////////////////////////
         $video = Video::with(["category", "user", "tags"])->withCount("viewer")->get();
-        dd($video);////////////////////// THIS IS HOME PAGE DATA ////////////////////////////////////////
-        return view('videos.create', compact('users', 'categories'));
+        //////////////////////////////////////////////////////////////////////////////////////
+        return view('videos.create', compact('users', 'categories', 'video'));
     }
 
     /**
@@ -43,7 +44,7 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string',
             'media' => 'required|file|mimes:mp4,avi,mpeg,mkv|max:2048000',
-            'thumbnail' => 'required|string',
+            'thumbnail' => 'required|image|mimes:jpg,gif,png,jpeg|max:8048',
             'description' => 'required|string|max:1000',
         ]);
 
@@ -58,6 +59,7 @@ class VideoController extends Controller
             $original->getError(),
             false
         );
+        $thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
 
         $media = $customFile->store('raw', 'uploads');
 
@@ -68,16 +70,16 @@ class VideoController extends Controller
         ProcessVideo::dispatch($media['folder'], $media['file']);
 
         try {
-            $token = (string) $request->bearerToken();
-            $payload = JWT::decode($token);
+            // $token = (string) $request->bearerToken();
+            // $payload = JWT::decode($token);
 
             $video = Video::create([
                 'title' => $request->title,
                 'subtitle' => $request->subtitle,
                 'slug' => $media['folder'],
-                'thumbnail' => $request->thumbnail,
+                'thumbnail' => $thumbnail,
                 'description' => $request->description,
-                'user_id' => $payload['id'],
+                'user_id' => /**$payload['id']**/ 1,
                 'category_id' => $request->category_id,
             ]);
 
