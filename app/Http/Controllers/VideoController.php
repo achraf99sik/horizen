@@ -28,6 +28,8 @@ class VideoController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
+        $video = Video::with(["category", "user", "tags"])->withCount("viewer")->get();
+        dd($video);////////////////////// THIS IS HOME PAGE DATA ////////////////////////////////////////
         return view('videos.create', compact('users', 'categories'));
     }
 
@@ -100,7 +102,7 @@ class VideoController extends Controller
      */
     public function videoDetails(string $slug): View
     {
-        $video = (object) Video::whereSlug($slug)->with("user")->first();
+        $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags"])->withCount("viewer")->first();
         return view("details", compact("video"));
     }
     /**
