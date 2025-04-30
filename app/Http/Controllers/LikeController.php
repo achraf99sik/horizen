@@ -16,6 +16,7 @@ class LikeController extends Controller
     {
         $perPage = 10;
         $likes = Like::paginate($perPage);
+        return view("home.home",compact("likes"));
 
         return response()->json([
             'data' => $likes->items(),
