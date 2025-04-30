@@ -1,151 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse - Twitch Clone</title>
-    <!-- Include Tailwind CSS -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
-    <style>
-        /* Custom scrollbar styling (optional, for better look) */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+@section('title', 'Home')
 
-        ::-webkit-scrollbar-track {
-            background: #18181b;
-            /* Sidebar bg or slightly darker */
-        }
+@section('content')
 
-        ::-webkit-scrollbar-thumb {
-            background: #505054;
-            /* A gray color */
-            border-radius: 4px;
-        }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6a6a6d;
-        }
 
-        /* Basic line-clamp fallback if plugin isn't used */
-        .line-clamp-2 {
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-        }
 
-        /* Hide scrollbar for category filter, but allow scrolling */
-        .category-scrollbar::-webkit-scrollbar {
-            display: none;
-            /* Safari and Chrome */
-        }
-
-        .category-scrollbar {
-            -ms-overflow-style: none;
-            /* IE and Edge */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-    </style>
-    <script>
-        // Optional: Define custom colors for better accuracy
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'twitch-bg-dark': '#0e0e10',     // Main background
-                        'twitch-bg-header': '#1f1f23',  // Header background
-                        'twitch-bg-sidebar': '#18181b', // Sidebar background
-                        'twitch-bg-card': '#0e0e10',     // Card background (same as main)
-                        'twitch-bg-hover': '#2f2f35',   // Generic hover background
-                        'twitch-purple': '#9147ff',     // Twitch purple (not used here but common)
-                        'twitch-pink': '#ef3fa0',      // Category pink
-                        'twitch-gray-light': '#adadb8', // Lighter gray text
-                        'twitch-gray-dark': '#505054',   // Darker gray elements/borders
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-
-<body class="bg-twitch-bg-dark text-white font-sans">
-
-    <!-- Header (sticky) -->
-    <nav class="bg-twitch-bg-header text-white flex items-center justify-between px-4 py-2 sticky top-0 z-50 h-14">
-        <!-- Left Section: Logo, Links -->
-        <div class="flex items-center space-x-4">
-            <a href="#" class="flex-shrink-0">
-                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                            <stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
-                            <stop offset="70%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#4a004a;stop-opacity:1" />
-                        </radialGradient>
-                        <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
-                            <stop offset="0%" style="stop-color:#ffcc66; stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#ffffff; stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#ffcc66; stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <ellipse cx="50" cy="50" rx="45" ry="25" fill="url(#grad2)" transform="rotate(-10 50 50)" />
-                    <ellipse cx="50" cy="50" rx="35" ry="15" fill="url(#grad1)" transform="rotate(-10 50 50)" />
-                    <circle cx="50" cy="50" r="15" fill="black" />
-                </svg>
-            </a>
-            <a href="#" class="text-twitch-gray-light hover:text-white font-semibold">Following</a>
-            <a href="#" class="text-white font-semibold border-b-2 border-orange-500 pb-[7px]">Browse</a>
-            <button class="text-twitch-gray-light hover:text-white"><svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                </svg></button>
-        </div>
-        <!-- Center Section: Search -->
-        <div class="flex-1 flex justify-center px-6 lg:px-10">
-            <div class="relative w-full max-w-xs lg:max-w-sm">
-                <input type="text" placeholder="Search"
-                    class="bg-[#3a3a3d] border border-[#505054] text-gray-200 placeholder-gray-400 rounded-md py-1.5 px-4 pl-10 block w-full focus:outline-none focus:ring-1 focus:ring-twitch-pink focus:border-twitch-pink" />
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg
-                        xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg></div>
-            </div>
-        </div>
-        <!-- Right Section: Icons -->
-        <div class="flex items-center space-x-4">
-            <button class="relative text-twitch-gray-light hover:text-white"><svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.017 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                </svg><span
-                    class="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-twitch-pink rounded-full">70</span></button>
-            <button class="text-twitch-gray-light hover:text-white"><svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                </svg></button>
-            <button><svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="16" cy="16" r="16" fill="#ef3a83" />
-                    <path
-                        d="M16 18C19.3137 18 22 15.3137 22 12C22 8.68629 19.3137 6 16 6C12.6863 6 10 8.68629 10 12C10 15.3137 12.6863 18 16 18ZM16 20C11.5817 20 8 21.7909 8 24V26H24V24C24 21.7909 20.4183 20 16 20Z"
-                        fill="white" />
-                </svg></button>
-        </div>
-    </nav>
-
-    <!-- Main Content Area -->
     <div class="flex" style="height: calc(100vh - 56px);"> <!-- Full height minus header -->
 
         <!-- Sidebar (sticky within flex item) -->
-        <aside class="w-60 bg-twitch-bg-sidebar p-3 flex-shrink-0 overflow-y-auto sticky top-14 h-full">
+        <aside class="w-60 bg-twitch-bg-sidebar p-3 flex-shrink-0 sticky top-14 h-full">
             <!-- For You Section -->
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-2">
@@ -233,23 +98,48 @@
         </aside>
 
         <!-- Main Content Grid Area -->
-        <main class="flex-1 p-6 overflow-y-auto h-full">
+        <main class="flex-1 p-6  h-full">
             <h1 class="text-5xl font-bold mb-6">Browse</h1>
-
             <!-- Category Filters -->
             <div class="flex space-x-3 mb-6 overflow-x-auto pb-2 category-scrollbar">
                 <!-- Example Categories (Add more) -->
                 <a href="#"
-                    class="bg-twitch-pink text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-pink-700 whitespace-nowrap flex-shrink-0">
+                    class="bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-pink-700 whitespace-nowrap flex-shrink-0">
                     <span>Games</span>
                     <!-- Placeholder Icon - Replace with actual game icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                        <path
-                            d="M12 1.75a2.25 2.25 0 0 1 2.25 2.25v3.025a.75.75 0 0 1-1.5 0V4a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75v3.025a.75.75 0 0 1-1.5 0V4A2.25 2.25 0 0 1 12 1.75Zm-2.872 9.65a.75.75 0 0 0 1.058-.22L12 8.857l1.814 2.323a.75.75 0 1 0 1.278-.998l-2.25-2.883a.75.75 0 0 0-1.184 0l-2.25 2.883a.75.75 0 0 0 .164 1.22Z" />
-                        <path fill-rule="evenodd"
-                            d="M10.78 14.03a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06L7.5 15.19l1.03-1.03a.75.75 0 0 1 1.06 0Zm1.196-1.196a.75.75 0 0 0-1.06 0L9.72 14.03a.75.75 0 0 1-1.06 0L7.5 12.833l-.886.887a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l2.25-2.25a.75.75 0 0 0 0-1.06L11.977 12.833ZM18.75 16.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 .75-.75Z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    <div class="pb-16">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute mt-2" width="65" height="55" viewBox="0 0 80 70" fill="none">
+                            <g clip-path="url(#clip0_5_1390)">
+                                <g clip-path="url(#clip1_5_1390)">
+                                    <g clip-path="url(#clip2_5_1390)">
+                                        <path
+                                            d="M26.1083 5.608C27.3043 5.05 28.5003 5.985 29.1583 6.931C29.8863 7.978 30.1843 9.246 30.4863 10.467C30.8173 11.806 31.1353 13.265 31.7313 14.517C31.8933 14.857 31.8583 14.977 31.8663 15.317C31.8773 15.799 32.3363 16.095 32.7853 16.033C33.2423 16.007 33.6853 15.92 34.0913 15.828C35.8793 15.423 37.6743 15.054 39.4553 14.616C40.4745 14.359 41.498 14.1193 42.5253 13.897C43.5283 13.686 44.5373 13.618 45.6153 13.548C48.8813 13.338 52.1093 12.732 55.2973 12.004C55.7513 11.9 56.2513 12.077 56.7023 12.157C58.1123 12.407 59.2423 13.14 60.0233 14.36C60.8433 15.641 60.8013 16.291 61.3633 17.976C62.2383 20.602 62.4453 23.379 63.0773 26.064C63.8053 29.159 64.4303 32.429 65.6333 35.368C66.5453 37.599 67.1273 40.005 67.5633 42.406C67.8123 43.774 67.8723 44.889 67.5693 46.253C67.5023 46.556 67.1863 47.014 66.6493 47.542C66.1708 48.002 65.6558 48.4223 65.1093 48.799C63.9863 49.576 62.8073 50.678 62.1903 51.912C62.1402 51.9994 62.1085 52.0961 62.0972 52.1962C62.0858 52.2963 62.095 52.3976 62.1242 52.4941C62.1533 52.5905 62.2019 52.6799 62.2668 52.7569C62.3318 52.8339 62.4118 52.8968 62.5019 52.9418C62.592 52.9868 62.6904 53.0129 62.791 53.0186C62.8915 53.0242 62.9922 53.0093 63.0868 52.9747C63.1814 52.94 63.2679 52.8865 63.3411 52.8172C63.4142 52.748 63.4725 52.6645 63.5123 52.572C63.6983 52.202 64.0903 51.706 64.5763 51.207C65.5283 50.231 66.7133 49.55 67.6853 48.597C68.2393 48.052 68.8443 47.333 69.0123 46.574C69.3573 45.022 69.3013 43.697 69.0183 42.141C68.5733 39.692 67.9683 37.174 67.0013 34.808C66.3933 33.323 65.9613 31.748 65.6413 30.148C65.4663 29.268 65.2283 28.405 64.9913 27.541C64.8218 26.9386 64.6634 26.3332 64.5163 25.725C64.1843 24.314 63.9903 23.013 63.7553 21.663C63.4423 19.87 62.9223 18.163 62.4423 16.415C62.1923 15.501 61.9543 14.635 61.2683 13.563C60.6203 12.55 59.5363 11.462 58.4483 10.933C57.6523 10.547 55.8013 10.372 54.9683 10.563C52.2693 11.179 50.4163 11.519 47.6743 11.885C45.8603 12.127 44.0173 12.072 42.2203 12.45C41.1713 12.67 40.1283 12.928 39.1003 13.18C37.7503 13.513 36.4283 13.838 35.1043 14.083C34.5073 14.193 33.9243 14.368 33.3263 14.477C33.1773 14.075 32.9553 13.705 32.8113 13.301C32.4553 12.305 32.1973 11.226 31.9443 10.201C31.6233 8.901 31.2703 7.378 30.3723 6.087C29.8753 5.373 29.1803 4.697 28.3483 4.305C27.4983 3.903 26.4943 3.796 25.4833 4.268C24.7843 4.594 24.0843 4.923 23.4473 5.362C22.9253 5.72 22.6143 6.273 22.4073 6.736C22.2203 7.153 22.0873 7.59 21.9163 8.013C21.8735 8.10405 21.8498 8.20286 21.8465 8.3034C21.8432 8.40394 21.8604 8.5041 21.8971 8.59775C21.9339 8.69141 21.9893 8.77659 22.0601 8.84809C22.1308 8.9196 22.2154 8.97593 22.3087 9.01364C22.4019 9.05135 22.5019 9.06966 22.6024 9.06743C22.703 9.0652 22.8021 9.04249 22.8936 9.00069C22.9851 8.95889 23.0671 8.89887 23.1346 8.8243C23.2021 8.74974 23.2537 8.66218 23.2863 8.567C23.5503 7.917 23.6783 6.997 24.2853 6.58C24.8333 6.203 25.4283 5.925 26.0933 5.615L26.1083 5.608Z"
+                                            fill="#00FAFA" />
+                                        <path
+                                            d="M28.0363 7.03024L31.8163 16.6402C38.8543 15.5372 53.3363 13.2372 54.9743 12.8592C57.0223 12.3862 59.0703 13.1742 59.7013 15.3792C60.3313 17.5852 65.5293 38.6942 66.1593 40.5842C66.7893 42.4742 67.1053 43.7352 66.9473 44.8382C66.7903 45.9412 62.6943 50.8242 60.9613 51.6122C59.2283 52.4002 52.6113 54.6052 44.5773 56.4952C36.5433 58.3852 18.5843 62.9552 16.2213 63.5852C13.8583 64.2152 11.4953 64.0572 10.5503 62.4822C9.60529 60.9062 8.34429 57.4412 5.19429 45.3112C2.04329 33.1802 1.41329 30.5022 1.72829 29.4002C2.04329 28.2972 4.72129 22.1532 6.13829 21.6802C7.27329 21.3022 20.3693 18.7922 26.7763 17.5852L23.9403 10.0222C23.9933 9.33924 24.3813 7.78524 25.5163 7.02924C26.6503 6.27324 27.6683 6.71524 28.0363 7.03024Z"
+                                            fill="white" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M24.2116 9.02321C23.3346 9.65121 23.3256 9.95421 24.1406 11.5532C24.5276 12.3142 25.2906 13.8932 25.8346 15.0632L26.9326 17.6782H29.1686C29.0846 17.1072 26.1276 9.72821 25.7686 9.19321C25.3266 8.53721 24.9486 8.49521 24.2116 9.02321ZM2.20163 27.9032C1.56563 30.3422 1.51263 30.8002 1.71463 32.1192C1.81863 32.7952 2.01163 33.6482 2.14463 34.0132C2.27863 34.3782 2.55963 35.4922 2.76963 36.4882C4.04163 42.5202 5.29863 47.0452 7.71263 54.2902C8.47763 56.5862 9.18663 58.7832 9.28663 59.1732C9.63463 60.5202 10.5266 62.0982 11.3186 62.7662C12.8516 64.0582 13.4326 64.2612 14.3856 63.8352C14.6586 63.7132 15.3066 63.5772 15.8266 63.5322C25.5356 61.6942 46.3756 56.1802 58.1246 52.5442C59.9336 52.1312 60.3766 51.9002 62.7606 50.1272C64.5846 48.7702 66.7896 45.6252 66.7896 45.6252L66.2896 43.8922C66.2896 43.8922 65.6866 45.5962 63.3236 46.2552C62.5006 46.4852 61.0986 46.8652 60.0156 47.1982C58.9316 47.5312 57.4786 47.9232 56.7856 48.0682C54.4656 48.5532 42.6096 51.7622 41.3116 52.2552C40.8846 52.4182 39.3196 52.8622 35.5186 53.8982C34.4786 54.1812 31.5016 55.0292 28.9026 55.7832C26.3026 56.5362 23.2896 57.3502 22.2066 57.5912C21.1236 57.8322 19.7186 58.1852 19.0836 58.3752C16.7906 59.0632 15.3936 59.0852 14.1536 58.4522C13.5276 58.1322 12.3056 55.0572 11.1806 50.9682C10.7763 49.496 10.3639 48.026 9.94363 46.5582C8.67963 42.2002 7.55363 37.9122 6.75863 34.4402C6.2513 32.3018 5.68206 30.1786 5.05163 28.0732C4.82263 27.3342 4.54763 25.4612 5.19363 22.6252C5.19363 22.6252 2.43963 26.9892 2.20163 27.9032ZM43.3856 24.3482C42.5726 24.5432 41.2436 25.3502 40.8116 25.9112C40.5866 26.2042 40.1416 26.7522 39.8236 27.1292C39.0796 28.0112 38.8136 29.1502 39.0536 30.4392C39.2686 31.6072 39.7916 32.4792 40.8696 33.4632C42.5936 35.0392 44.5076 35.3152 46.4666 34.2702C47.0066 33.9822 47.6366 33.5052 47.8646 33.2102C48.0926 32.9152 48.5696 32.3262 48.9246 31.9012C49.2786 31.4772 49.6506 30.8562 49.7506 30.5222C50.0056 29.6722 49.9776 28.3472 49.6846 27.3612C49.0336 25.1662 46.0106 23.7212 43.3856 24.3482ZM46.3756 26.3702C47.4186 26.9492 47.7356 27.4222 47.8376 28.5562C47.9786 30.1102 47.2476 31.1882 45.7716 31.6012C44.8046 31.8712 44.0506 31.6982 43.3166 31.0342C42.1406 29.9722 41.6806 28.2142 42.2776 27.0642C42.8676 25.9252 44.9406 25.5742 46.3756 26.3702ZM24.0976 26.8792C23.9676 26.9632 23.5946 27.0332 23.2686 27.0342C22.5066 27.0372 20.1146 27.5702 19.0156 27.9812C17.8656 28.4112 17.4096 28.9172 17.4096 29.7612C17.4096 30.2692 17.3196 30.4992 17.0166 30.7592C16.6746 31.0532 16.6286 31.2092 16.6606 31.9742C16.6806 32.4562 16.8326 33.2842 16.9976 33.8142C17.2116 34.5032 17.2446 34.7912 17.1136 34.8292C15.0596 35.4302 15.0556 35.4332 14.6366 36.2522C14.4166 36.6852 14.0146 37.2582 13.7466 37.5252C13.0286 38.2372 12.9006 38.8892 13.1706 40.4552C13.4636 42.1472 13.9806 43.8972 14.2916 44.2472C14.4856 44.4652 14.7876 44.5222 15.7336 44.5172C16.8746 44.5132 19.0036 44.2952 19.5236 44.1302C19.7226 44.0672 19.8376 44.3782 20.1236 45.7432C20.6176 48.1082 20.9786 48.7802 21.9436 49.1322C22.6786 49.4002 22.7456 49.3992 24.0696 49.0852C26.0896 48.6072 27.8776 47.9892 28.2126 47.6542C28.3926 47.4732 28.5106 47.1292 28.5146 46.7672C28.5196 46.2772 28.6056 46.1232 29.0266 45.8602C29.3646 45.6472 29.6016 45.3242 29.7426 44.8822C29.9286 44.2952 29.9146 44.0752 29.6246 42.9272C29.4446 42.2152 29.3146 41.6222 29.3366 41.6072C29.3566 41.5942 29.7616 41.4472 30.2346 41.2802C30.8566 41.0622 31.1966 40.8282 31.4596 40.4372C31.6596 40.1402 32.0346 39.7942 32.2916 39.6692C33.0156 39.3192 33.1876 38.4742 32.8636 36.8672C32.6106 35.6092 31.7036 32.6672 31.4456 32.2642C31.1556 31.8112 30.5706 31.7572 29.3276 32.0682C28.7597 32.2121 28.1892 32.3461 27.6166 32.4702C27.0586 32.5802 27.1776 32.8362 26.2976 29.6362C25.8826 28.1242 25.4846 27.3012 25.0096 26.9682C24.6036 26.6832 24.4266 26.6672 24.0976 26.8792ZM24.4676 31.5262C24.7776 32.7392 25.0526 33.9372 25.0776 34.1892C25.1036 34.4632 25.2866 34.7692 25.5356 34.9532L25.9496 35.2612L28.0196 34.7482C29.1566 34.4662 30.1096 34.2632 30.1356 34.2982C30.2376 34.4322 31.2096 37.6192 31.1606 37.6542C31.1306 37.6752 30.7886 37.7812 30.3986 37.8902C27.4356 38.7202 27.0616 38.8822 26.8336 39.4272C26.6356 39.9012 26.6536 40.1312 27.0136 41.7272C27.2316 42.7012 27.4486 43.6172 27.4936 43.7632C27.5616 43.9762 27.3276 44.1032 26.2706 44.4252C25.5516 44.6432 24.6676 44.8702 24.3056 44.9272L23.6466 45.0322L23.4866 44.4222C23.3996 44.0882 23.1796 43.2122 22.9976 42.4752C22.5606 40.6992 22.3876 40.2912 21.9446 40.0012C21.6066 39.7802 21.4466 39.7882 20.1186 40.0962C19.3176 40.2822 18.3786 40.5322 18.0326 40.6522L17.4036 40.8702L16.9836 39.2702C16.7536 38.3902 16.5416 37.5682 16.5116 37.4432C16.4696 37.2702 16.9186 37.1202 18.3846 36.8132C20.9476 36.2772 21.0526 36.1762 20.8066 34.4912C20.7066 33.8102 20.4266 32.4932 20.1836 31.5642L19.7416 29.8762L20.3046 29.7832C20.9663 29.6662 21.6266 29.5422 22.2856 29.4112C23.0656 29.2582 23.7476 29.1752 23.8026 29.2272C23.8566 29.2782 24.1556 30.3132 24.4666 31.5262H24.4676ZM52.7946 30.8162C51.5446 31.1122 49.7286 32.7062 49.3826 33.8122C49.3146 34.0282 49.0926 34.4042 48.8876 34.6492C48.3976 35.2362 48.2996 35.6792 48.3976 36.8972C48.5526 38.8262 49.8846 40.7802 51.4406 41.3622C52.5366 41.7722 53.4026 41.7722 54.7306 41.3622C55.5006 41.1252 55.9236 40.8832 56.3176 40.4572C56.6136 40.1372 57.2096 39.4962 57.6426 39.0322C58.6116 37.9942 59.0696 36.8552 59.0696 35.4862C59.0696 34.1562 58.7096 33.1812 57.8696 32.2482C56.8636 31.1282 55.8296 30.6552 54.4316 30.6762C53.8196 30.6852 53.0836 30.7482 52.7946 30.8162ZM55.3746 32.8462C56.6166 33.4102 57.1386 34.4312 56.9876 36.0012C56.8606 37.3242 55.8276 38.2402 54.3436 38.3412C53.1016 38.4252 52.2026 37.9362 51.6936 36.9012C51.1346 35.7652 51.0876 35.0742 51.5076 34.2052C52.1916 32.7922 53.9196 32.1852 55.3746 32.8462Z"
+                                            fill="black" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M25.2804 6.11194C23.4664 6.98594 22.4254 9.19394 23.0374 10.8649C23.1644 11.2119 23.4984 12.1339 23.7794 12.9129C24.0604 13.6929 24.5354 14.9229 24.8344 15.6469C25.1344 16.3699 25.3324 17.0079 25.2764 17.0639C25.1694 17.1719 22.8934 17.5939 16.6264 18.6669C14.5544 19.0219 11.7894 19.5509 10.4834 19.8419C9.17737 20.1329 7.68337 20.4479 7.16337 20.5419C5.80037 20.7899 4.62937 21.4109 4.07037 22.1819C3.81137 22.5399 2.93037 24.1659 2.11237 25.7949C1.02137 27.9699 0.625366 28.9169 0.625366 29.3529C0.625366 31.7309 2.09137 38.7909 3.67337 44.0259C4.13337 45.5529 5.47137 50.5929 6.15937 53.3999C6.78337 55.9449 8.41537 60.7669 8.99937 61.7899C9.69637 63.0119 10.6424 64.1489 11.2024 64.4389C11.4744 64.5789 12.3774 64.8319 13.2104 64.9999L14.7244 65.3059L16.2214 64.9169C17.0444 64.7029 19.2064 64.1349 21.0264 63.6549C24.2024 62.8169 26.7264 62.1589 31.6594 60.8819C32.9154 60.5569 34.6174 60.1069 35.4404 59.8819C36.2634 59.6579 38.8504 59.0019 41.1904 58.4239C43.5304 57.8469 46.4004 57.0389 47.5704 56.6289C49.8104 55.8439 55.0834 54.2129 58.4974 53.2499C59.6114 52.9359 60.8614 52.5069 61.2744 52.2979C61.7134 52.0749 62.8674 51.0909 64.0534 49.9279C65.1684 48.8349 66.2314 47.8359 66.4164 47.7099C66.6014 47.5839 66.9784 47.0559 67.2554 46.5369C67.6604 45.7769 67.7884 45.2939 67.9154 44.0609L68.0714 42.5299L66.5474 37.2519C65.7104 34.3499 64.6124 30.2019 64.1074 28.0369C63.6034 25.8709 63.1174 23.9079 63.0294 23.6769C62.9404 23.4449 62.6904 22.4169 62.4734 21.3919C61.9804 19.0589 60.4494 14.5599 59.8554 13.6969C59.3544 12.9679 58.6174 12.3669 57.8434 12.0549C57.1474 11.7749 55.1714 11.9059 52.4534 12.4149C51.2844 12.6329 48.9454 12.9969 47.2554 13.2229C45.5654 13.4499 42.7654 13.9129 41.0324 14.2529C39.3004 14.5919 36.8254 15.0509 35.5344 15.2729C34.2434 15.4949 33.0244 15.7169 32.8274 15.7659C32.5094 15.8459 32.4414 15.7679 32.2374 15.0939C32.1114 14.6739 31.6384 13.3739 31.1874 12.2039C30.7374 11.0339 30.0874 9.29794 29.7454 8.34394C28.9324 6.08394 28.6974 5.84494 27.2084 5.78094C26.2604 5.74094 25.9334 5.79594 25.2794 6.11094L25.2804 6.11194ZM27.3174 8.13194C27.5884 8.25594 27.8174 8.58594 28.0334 9.15994C28.2074 9.62494 28.5384 10.3759 28.7684 10.8299C29.1404 11.5609 30.4384 15.0599 30.6584 15.9179C30.7334 16.2159 30.6184 16.2709 29.3664 16.5339C28.4994 16.7159 27.9104 16.7699 27.7694 16.6799C27.6464 16.6009 27.3804 16.1469 27.1794 15.6699C26.9774 15.1939 26.5154 14.1299 26.1524 13.3069C25.7984 12.5054 25.4471 11.7028 25.0984 10.8989L24.7054 9.98794L25.0534 9.26894C25.3974 8.55794 26.1314 7.95294 26.6504 7.95194C26.7984 7.95194 27.0984 8.03194 27.3174 8.13194ZM57.5804 14.1629C58.0024 14.4399 58.9864 16.2869 59.5204 17.8049C59.7054 18.3289 60.0644 19.7829 60.3184 21.0349C61.4314 26.5239 63.0164 32.8959 64.7444 38.8279C66.2714 44.0729 66.2724 43.8529 64.7144 46.1599C63.3514 48.1809 62.2664 49.4319 61.1354 50.2859C60.3034 50.9149 58.4124 51.7239 57.1804 51.9779C56.1884 52.1829 50.7064 53.7929 47.7284 54.7539C46.1254 55.2709 43.0774 56.1179 40.9544 56.6369C33.5654 58.4409 31.8864 58.8389 30.3204 59.1539C29.4544 59.3279 27.2924 59.8569 25.5154 60.3279C21.9724 61.2689 16.3684 62.6479 14.8814 62.9459C12.0964 63.5029 11.0714 62.4259 9.31937 57.1019C8.87837 55.7589 8.12537 53.1719 7.64737 51.3519C7.17037 49.5319 6.37737 46.6619 5.88537 44.9719C5.39337 43.2819 4.82437 41.2259 4.62037 40.4029C4.41637 39.5799 4.03637 38.1269 3.77537 37.1729C3.43017 35.8673 3.11342 34.5543 2.82537 33.2349C2.26037 30.6229 2.29537 30.0079 3.10837 28.2729C3.41337 27.6229 3.99937 26.3249 4.41137 25.3889C4.82337 24.4529 5.28937 23.5439 5.44737 23.3699C5.91537 22.8529 7.85937 22.0249 9.21137 21.7659C9.90437 21.6329 11.4634 21.3699 12.6764 21.1789C13.8894 20.9889 16.1224 20.6259 17.6394 20.3719C19.1554 20.1179 21.7074 19.7009 23.3094 19.4449C29.6384 18.4369 30.3384 18.3129 30.9494 18.0949C32.0074 17.7139 41.7714 15.9949 48.2794 15.0429C50.7054 14.6879 53.4344 14.2609 54.3444 14.0939C56.1644 13.7599 56.9914 13.7779 57.5804 14.1639V14.1629Z"
+                                            fill="#323239" />
+                                    </g>
+                                </g>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_5_1390">
+                                    <rect width="69" height="69" fill="white" transform="translate(0.309937 0.600098)" />
+                                </clipPath>
+                                <clipPath id="clip1_5_1390">
+                                    <rect width="69" height="69" fill="white" transform="translate(0.309937 0.600098)" />
+                                </clipPath>
+                                <clipPath id="clip2_5_1390">
+                                    <rect width="69" height="69" fill="white" transform="translate(0.309937 0.600098)" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </div>
                 </a>
                 <a href="#"
                     class="bg-twitch-pink text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-pink-700 whitespace-nowrap flex-shrink-0">
@@ -302,109 +192,12 @@
             </div>
 
             <!-- Video Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8">
-                <!-- Repeat Video Card Component (x12 for the example) -->
-                <!-- Card 1 -->
-                <div class="bg-twitch-bg-card rounded-lg overflow-hidden">
-                    <div><img class="w-full h-auto object-cover aspect-video"
-                            src="https://i.ytimg.com/vi/IsXvoYeVIaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_p76hY0G6xL7J1kP2h9kG9p9p_A"
-                            alt="..."></div>
-                    <div class="p-3 flex items-start space-x-3">
-                        <div class="flex-shrink-0 mt-1"><img class="w-9 h-9 rounded-full object-cover"
-                                src="https://yt3.ggpht.com/ytc/AIdro_kY1Qo_3b7b7j7a_9aZ8w8e9Z9d_7f8g7h7g6h6=s48-c-k-c0x00ffffff-no-rj"
-                                alt="Avatar"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2 mb-1">The Beauty of
-                                Existence - Heart Touching Nasheed</h3>
-                            <p class="text-twitch-gray-light text-xs">19,210,251 views <span class="mx-1">·</span> Jul
-                                1, 2016</p>
-                        </div>
-                        <div class="flex-shrink-0"><button
-                                class="text-twitch-gray-light hover:text-white p-1 -mr-1"><svg
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                </svg></button></div>
-                    </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-twitch-bg-card rounded-lg overflow-hidden">
-                    <div><img class="w-full h-auto object-cover aspect-video"
-                            src="https://i.ytimg.com/vi/IsXvoYeVIaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_p76hY0G6xL7J1kP2h9kG9p9p_A"
-                            alt="..."></div>
-                    <div class="p-3 flex items-start space-x-3">
-                        <div class="flex-shrink-0 mt-1"><img class="w-9 h-9 rounded-full object-cover"
-                                src="https://yt3.ggpht.com/ytc/AIdro_kY1Qo_3b7b7j7a_9aZ8w8e9Z9d_7f8g7h7g6h6=s48-c-k-c0x00ffffff-no-rj"
-                                alt="Avatar"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2 mb-1">The Beauty of
-                                Existence - Heart Touching Nasheed</h3>
-                            <p class="text-twitch-gray-light text-xs">19,210,251 views <span class="mx-1">·</span> Jul
-                                1, 2016</p>
-                        </div>
-                        <div class="flex-shrink-0"><button
-                                class="text-twitch-gray-light hover:text-white p-1 -mr-1"><svg
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                </svg></button></div>
-                    </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-twitch-bg-card rounded-lg overflow-hidden">
-                    <div><img class="w-full h-auto object-cover aspect-video"
-                            src="https://i.ytimg.com/vi/IsXvoYeVIaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_p76hY0G6xL7J1kP2h9kG9p9p_A"
-                            alt="..."></div>
-                    <div class="p-3 flex items-start space-x-3">
-                        <div class="flex-shrink-0 mt-1"><img class="w-9 h-9 rounded-full object-cover"
-                                src="https://yt3.ggpht.com/ytc/AIdro_kY1Qo_3b7b7j7a_9aZ8w8e9Z9d_7f8g7h7g6h6=s48-c-k-c0x00ffffff-no-rj"
-                                alt="Avatar"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2 mb-1">The Beauty of
-                                Existence - Heart Touching Nasheed</h3>
-                            <p class="text-twitch-gray-light text-xs">19,210,251 views <span class="mx-1">·</span> Jul
-                                1, 2016</p>
-                        </div>
-                        <div class="flex-shrink-0"><button
-                                class="text-twitch-gray-light hover:text-white p-1 -mr-1"><svg
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                </svg></button></div>
-                    </div>
-                </div>
-                <!-- Card 4 -->
-                <div class="bg-twitch-bg-card rounded-lg overflow-hidden">
-                    <div><img class="w-full h-auto object-cover aspect-video"
-                            src="https://i.ytimg.com/vi/IsXvoYeVIaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_p76hY0G6xL7J1kP2h9kG9p9p_A"
-                            alt="..."></div>
-                    <div class="p-3 flex items-start space-x-3">
-                        <div class="flex-shrink-0 mt-1"><img class="w-9 h-9 rounded-full object-cover"
-                                src="https://yt3.ggpht.com/ytc/AIdro_kY1Qo_3b7b7j7a_9aZ8w8e9Z9d_7f8g7h7g6h6=s48-c-k-c0x00ffffff-no-rj"
-                                alt="Avatar"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2 mb-1">The Beauty of
-                                Existence - Heart Touching Nasheed</h3>
-                            <p class="text-twitch-gray-light text-xs">19,210,251 views <span class="mx-1">·</span> Jul
-                                1, 2016</p>
-                        </div>
-                        <div class="flex-shrink-0"><button
-                                class="text-twitch-gray-light hover:text-white p-1 -mr-1"><svg
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                </svg></button></div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-8">
+                @foreach ($video as $v)
+                    <x-video-card slug="{{ $v->slug }}" title="{{ $v->title }}" thumbnail="{{ Storage::url($v->thumbnail) }}" views="{{ number_format($v->viewer_count) }}" date="{{ date_format($v->created_at, 'M j, Y')}}" />
+                @endforeach
             </div>
         </main>
 
     </div>
-
-</body>
-
-</html>
+@endsection

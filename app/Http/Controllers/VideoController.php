@@ -31,7 +31,7 @@ class VideoController extends Controller
         ////////////////////// THIS IS THE HOME PAGE DATA ////////////////////////////////////////
         $video = Video::with(["category", "user", "tags","comments"])->withCount("viewer")->get();
         //////////////////////////////////////////////////////////////////////////////////////
-        return view('videos.create', compact('users', 'categories', 'video'));
+        return view('home.home', compact('users', 'categories', 'video'));
     }
 
     /**
