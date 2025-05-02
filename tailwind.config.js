@@ -15,7 +15,7 @@ module.exports = {
                 "twitch-bg-card": "#0e0e10",
                 "twitch-bg-hover": "#2f2f35",
                 "twitch-purple": "#9147ff",
-                "twitch-pink": "#ef3fa0", // Used for buttons, badges
+                "twitch-pink": "#E70353", // Used for buttons, badges
                 "twitch-gray-light": "#adadb8",
                 "twitch-gray-dark": "#505054",
 

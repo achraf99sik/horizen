@@ -2,7 +2,7 @@
 <a href="watch/{{ $slug }}">
     <div class="max-w-sm rounded-lg overflow-hidden shadow-lg">
         <div>
-            <img class="w-full h-auto object-cover"
+            <img class="w-full h-36 object-contain"
                 src="{{ $thumbnail }}"
                 alt="Video thumbnail showing a large moon over mountains in a pinkish sky">
         </div>
