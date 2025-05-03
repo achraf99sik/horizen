@@ -101,15 +101,15 @@
         <main class="flex-1 p-6  h-full">
             <h1 class="text-5xl font-bold mb-6">Browse</h1>
             <!-- Category Filters -->
-            <div class="flex space-x-3 mb-6 overflow-x-auto max-w-4xl pb-2 category-scrollbar">
+            <div class="flex space-x-3 mb-6 py-4 overflow-x-auto overflow-y-visible max-w-4xl category-scrollbar">
                 <!-- Example Categories (Add more) -->
                 <a href="category/games"
-                    class="bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
+                    class="bg-twitch-pink h-8 w-36 relative text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
                     <span>Games</span>
                     <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute stick mt-2">
-                            <img src="{{ asset('images/joy.svg') }}" alt="">
+                    <div class="pb-14">
+                        <div class="absolute z-30">
+                            <img class="" src="{{ asset('images/joy.svg') }}" alt="">
                         </div>
                     </div>
                 </a>
