@@ -101,89 +101,13 @@
         <main class="flex-1 p-6  h-full">
             <h1 class="text-5xl font-bold mb-6">Browse</h1>
             <!-- Category Filters -->
-            <div class="flex space-x-3 mb-6 py-4 overflow-x-auto overflow-y-visible max-w-4xl category-scrollbar">
+            <div class="flex space-x-3 mb-6 py-6 overflow-x-auto overflow-y-visible max-w-4xl category-scrollbar">
                 <!-- Example Categories (Add more) -->
-                <a href="category/games"
-                    class="bg-twitch-pink h-8 w-36 relative text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Games</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-14">
-                        <div class="absolute z-30">
-                            <img class="" src="{{ asset('images/joy.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/games"
-                    class="bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Games</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/joy.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/games"
-                    class="bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Games</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/joy.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/games"
-                    class="bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Games</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/joy.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/podcasts"
-                    class="bg-twitch-pink overflow-y-visible bg-twitch-pink h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Podcasts</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/mic.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/music"
-                    class="bg-twitch-pink overflow-y-visible h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Music</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/music.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/creative"
-                    class="bg-twitch-pink overflow-y-visible h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Creative</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/paint.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-                <a href="category/esports"
-                    class="bg-twitch-pink overflow-y-visible h-8 w-36 text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
-                    <span>Esports</span>
-                    <!-- Placeholder Icon - Replace with actual game icon -->
-                    <div class="pb-16">
-                        <div class="absolute mt-2">
-                            <img src="{{ asset('images/trophy.svg') }}" alt="">
-                        </div>
-                    </div>
-                </a>
-
+                <x-category-card id="1" name="games"/>
+                <x-category-card id="1" name="podcasts"/>
+                <x-category-card id="1" name="music"/>
+                <x-category-card id="1" name="creative"/>
+                <x-category-card id="1" name="esports"/>
                 <!-- ... Add more categories -->
             </div>
 
