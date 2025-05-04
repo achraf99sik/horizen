@@ -7,7 +7,6 @@ use App\Models\Video;
 use App\Models\Category;
 use Illuminate\View\View;
 use App\Jobs\ProcessVideo;
-use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Services\FileUploadService;
@@ -29,7 +28,7 @@ class VideoController extends Controller
         $users = User::all();
         $categories = Category::all();
         ////////////////////// THIS IS THE HOME PAGE DATA ////////////////////////////////////////
-        $video = Video::with(["category", "user", "tags","comments"])->withCount("viewer")->get();
+        $video = Video::with(["category", "user", "tags", "comments"])->withCount("viewer")->get();
         //////////////////////////////////////////////////////////////////////////////////////
         return view('home.home', compact('users', 'categories', 'video'));
     }
@@ -102,9 +101,9 @@ class VideoController extends Controller
      * @param string $slug
      * @return View
      */
-    public function videoDetails(string $slug): View
+    public function videoDetails(string $slug, Request $request): View
     {
-        $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags"])->withCount("viewer")->first();
+        $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags", "likes"])->withCount("likes")->withCount("viewer")->first();
         return view("details", compact("video"));
     }
     /**

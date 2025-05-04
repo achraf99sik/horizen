@@ -69,8 +69,9 @@
                 <div class="flex align-middle gap-4 items-center">
                     <div class="flex align-middle items-center">
                         <form class="inline">
+
                             <button type="submit" class="bg-pink-600 rounded-l-full p-2 font-medium text-white like-button"
-                                data-video-id="{{ $video->id }}">
+                                data-video-id="1">
                                 Like
                             </button>
                         </form>
@@ -84,6 +85,29 @@
         </div>
         <script src="https://cdn.vidstack.io/player" type="module"></script>
         <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                    const token = localStorage.getItem('token');
+                    const videoId = document.querySelector('.like-button')?.dataset?.videoId;
+
+                    if (!token || !videoId) return;
+
+                    fetch(`/api/like/${videoId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.liked) {
+                                const btn = document.querySelector('.like-button');
+                                btn.innerText = 'Liked';
+                                btn.classList.replace('bg-pink-600', 'bg-green-600');
+                            }
+                        })
+                        .catch(err => console.error('Error fetching like status:', err));
+                });
             document.querySelectorAll('.like-button').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();

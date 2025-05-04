@@ -50,7 +50,7 @@ class LikeController extends Controller
             $token = (string) $request->bearerToken();
             $payload = JWT::decode($token);
 
-            $userId = $payload['id'];
+            $userId = $payload['sub'];
             $videoId = $request->video_id;
 
             $existingLike = Like::where('user_id', $userId)
@@ -90,23 +90,20 @@ class LikeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Like $like)
-    {
-        try {
-            return response()->json([
-                'status' => true,
-                'message' => 'like Existes',
-                'like' => $like
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ], 500);
-        }
-    }
 
+    public function show($video_id, Request $request)
+    {
+        $token = (string) $request->bearerToken();
+        $payload = JWT::decode($token);
+
+        $user = $payload['sub'];
+
+        $liked = Like::where('user_id', $user)
+            ->where('video_id', $video_id)
+            ->exists();
+
+        return response()->json(['liked' => $liked]);
+    }
     /**
      * Remove the specified resource from storage.
      */

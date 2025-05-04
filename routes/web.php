@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home', function () {
     return view('welcome');
 });
+Route::middleware('jwt')->group(function () {
+    Route::get('/test', function () {
+        return response()->json(['message' => 'Authenticated']);
+    });
+});
 Route::get("watch/{slug}", [VideoController::class, "videoDetails"]);
 Route::get("upload", [VideoController::class, "index"]);
 Route::post("upload", [VideoController::class, "store"])
