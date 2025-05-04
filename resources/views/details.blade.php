@@ -87,7 +87,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                     const token = localStorage.getItem('token');
-                    const videoId = document.querySelector('.like-button')?.dataset?.videoId;
+                    const videoId = {{ $video->id }};
 
                     if (!token || !videoId) return;
 
@@ -112,7 +112,7 @@
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
 
-                    const videoId = this.getAttribute('data-video-id');
+                    const videoId = {{ $video->id }};
                     const token = localStorage.getItem('token');
 
                     if (!token) {

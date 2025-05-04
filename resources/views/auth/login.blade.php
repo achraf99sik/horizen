@@ -11,9 +11,26 @@
                 <input type="email" name="email" placeholder="Email"
                     class="w-full p-3 rounded-lg bg-twitch-bg-hover text-white placeholder-twitch-gray-light focus:outline-none focus:ring-2 focus:ring-twitch-purple"
                     required>
-                <input type="password" name="password" placeholder="Password"
-                    class="w-full p-3 rounded-lg bg-twitch-bg-hover text-white placeholder-twitch-gray-light focus:outline-none focus:ring-2 focus:ring-twitch-purple"
-                    required>
+                <div class="relative">
+                    <input id="password" type="password" name="password" placeholder="Password"
+                        class="w-full p-3 pr-10 rounded-lg bg-twitch-bg-hover text-white placeholder-twitch-gray-light focus:outline-none focus:ring-2 focus:ring-twitch-purple"
+                        required />
+                    <button type="button" id="togglePassword"
+                        class="absolute top-1/2 text-3xl right-3 transform -translate-y-1/2 text-twitch-gray-light hover:text-white"
+                        aria-label="Toggle password visibility">
+                        👁
+                    </button>
+                </div>
+                <script>
+                    const passwordInput = document.getElementById("password");
+                    const togglePassword = document.getElementById("togglePassword");
+
+                    togglePassword.addEventListener("click", () => {
+                        const isVisible = passwordInput.type === "text";
+                        passwordInput.type = isVisible ? "password" : "text";
+                        togglePassword.textContent = isVisible ? "#*" : "👁";
+                    });
+                </script>
                 <button type="submit"
                     class="w-full bg-twitch-purple hover:bg-purple-700 p-3 rounded-lg font-bold transition duration-200">
                     Login
