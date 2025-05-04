@@ -21,3 +21,4 @@ Route::prefix("uploads")->group(function(){
         ->name("video.key");
 });
 Route::view('/signup', 'auth.signup');
+Route::view('/login', 'auth.login');
