@@ -20,3 +20,4 @@ Route::prefix("uploads")->group(function(){
     Route::get("key/{folder}/{key}", [VideoController::class, "getKey"])
         ->name("video.key");
 });
+Route::view('/signup', 'auth.signup');

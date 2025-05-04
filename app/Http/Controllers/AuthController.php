@@ -23,6 +23,7 @@ final class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:user,creator,admin',
         ]);
 
         if ($validated->fails()) {
@@ -36,6 +37,7 @@ final class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($password),
+            'role' => $request->role,
         ]);
 
         $token = $user->createToken();

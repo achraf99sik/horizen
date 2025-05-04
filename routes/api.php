@@ -21,7 +21,8 @@ Route::apiResource('tags', TagController::class);
 Route::apiResource('history', WatchHistoryController::class);
 Route::apiResource('like', LikeController::class);
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('signup', [AuthController::class, 'store'])->name('singup');
 
 Route::middleware('jwt')->group(function () {
     Route::get('profile', [AuthController::class, 'show']);
