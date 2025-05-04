@@ -16,7 +16,6 @@ class LikeController extends Controller
     {
         $perPage = 10;
         $likes = Like::paginate($perPage);
-        return view("home.home",compact("likes"));
 
         return response()->json([
             'data' => $likes->items(),
@@ -39,10 +38,11 @@ class LikeController extends Controller
                     'video_id' => 'required|exists:videos,id|integer'
                 ]
             );
+
             if ($validatedlike->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validatedlike->errors()
                 ], 401);
             }
@@ -50,14 +50,33 @@ class LikeController extends Controller
             $token = (string) $request->bearerToken();
             $payload = JWT::decode($token);
 
+            $userId = $payload['id'];
+            $videoId = $request->video_id;
+
+            $existingLike = Like::where('user_id', $userId)
+                ->where('video_id', $videoId)
+                ->first();
+
+            if ($existingLike) {
+                $existingLike->delete();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Like removed successfully',
+                    'action' => 'unliked'
+                ], 200);
+            }
+
             $like = Like::create([
-                'video_id' => $request->video_id,
-                'user_id' => $payload['id'],
+                'video_id' => $videoId,
+                'user_id' => $userId,
             ]);
+
             return response()->json([
                 'status' => true,
-                'message' => 'like Created Successfully',
-                'like' => $like
+                'message' => 'Like created successfully',
+                'like' => $like,
+                'action' => 'liked'
             ], 200);
 
         } catch (\Throwable $th) {

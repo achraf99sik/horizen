@@ -42,19 +42,17 @@
                     theme: {
                         extend: {
                             colors: {
-                                'navbar-bg': '#1f1f23', // Example dark background
-                                    'brand-pink': '#ef3a83', // Example pink color
-                                    'brand-orange': '#e9600f', // Example orange color
-                                    'search-bg': '#3a3a3d', // Example search background
-                                    'search-border': '#505054', // Example search border
+                                'navbar-bg': '#1f1f23',
+                                    'brand-pink': '#ef3a83',
+                                    'brand-orange': '#e9600f',
+                                    'search-bg': '#3a3a3d',
+                                    'search-border': '#505054',
                             }
                         }
                     }
                 }
             </style>
         </head>
-
-            
 
         <div class="w-1/2 player mb-20">
             <media-player title="{{ $video->title }}" src="{{ route("video.playlist", [$video->slug, 'index.m3u8']) }}">
@@ -70,7 +68,12 @@
                 </div>
                 <div class="flex align-middle gap-4 items-center">
                     <div class="flex align-middle items-center">
-                        <button class="bg-pink-600 rounded-l-full p-2 font-medium">Like</button>
+                        <form class="inline">
+                            <button type="submit" class="bg-pink-600 rounded-l-full p-2 font-medium text-white like-button"
+                                data-video-id="{{ $video->id }}">
+                                Like
+                            </button>
+                        </form>
                         <button class="bg-black rounded-r-full p-2 font-medium">Dislike</button>
                     </div>
                     <button class="bg-black rounded-full p-2 font-medium">Share</button>
@@ -80,5 +83,48 @@
             </div>
         </div>
         <script src="https://cdn.vidstack.io/player" type="module"></script>
+        <script>
+            document.querySelectorAll('.like-button').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const videoId = this.getAttribute('data-video-id');
+                    const token = localStorage.getItem('token');
+
+                    if (!token) {
+                        alert("You must be logged in to like.");
+                        return;
+                    }
+
+                    fetch('/api/like', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ video_id: videoId })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status) {
+                                if (data.action === 'liked') {
+                                    this.innerText = 'Liked';
+                                    this.classList.replace('bg-pink-600', 'bg-green-600');
+                                } else {
+                                    this.innerText = 'Like';
+                                    this.classList.replace('bg-green-600', 'bg-pink-600');
+                                }
+                            } else {
+                                console.error('Validation failed:', data.errors);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Request failed:', err);
+                        });
+                });
+            });
+        </script>
+
     </body>
 </html>
