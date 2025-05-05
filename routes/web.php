@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +28,4 @@ Route::prefix("uploads")->group(function(){
 });
 Route::view('/signup', 'auth.signup');
 Route::view('/login', 'auth.login');
+Route::get("/",[HomeController::class,"index"]);
