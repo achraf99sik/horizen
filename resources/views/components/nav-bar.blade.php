@@ -1,7 +1,7 @@
 <nav class="bg-navbar-bg text-white flex items-center justify-between px-4 py-2">
     <div class="flex items-center space-x-4">
         <!-- Logo Placeholder -->
-        <a href="#" class="flex-shrink-0">
+        <a href="/" class="flex-shrink-0">
             <img width="50px" src="{{ asset('Logo.png') }}"  alt="">
         </a>
         <a href="#" class="text-gray-300 hover:text-white font-semibold">Following</a>
