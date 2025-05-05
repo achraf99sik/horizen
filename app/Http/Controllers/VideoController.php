@@ -101,8 +101,10 @@ class VideoController extends Controller
      */
     public function videoDetails(string $slug, Request $request): View
     {
-        $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags", "likes"])->withCount("likes")->withCount("viewer")->first();
-        return view("details", compact("video"));
+        $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags", "likes", "comments"])->withCount("likes")->withCount("viewer")->first();
+        $videos = Video::with(["category", "user", "tags"])->withCount("viewer")->whereNot("id",$video->id)->paginate();
+        dd($videos);
+        return view("details", compact(["video","videos"]));
     }
     /**
      * Summary of show

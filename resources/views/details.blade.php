@@ -48,6 +48,7 @@
                         <button class="bg-black rounded-full w-10 h-10 font-semibold">...</button>
                     </div>
                 </div>
+                heeeeeeeeeeeeeeeere
             </div>
 @endsection
 @push("scripts")
