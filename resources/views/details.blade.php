@@ -12,7 +12,7 @@
     </style>
         <link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
         <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
-            <div class="flex gap-6 mt-8">
+            <div class="flex justify-around gap-6 mt-8">
                 <div class="w-1/2 player">
                     <media-player title="{{ $video->title }}" src="{{ route("video.playlist", [$video->slug, 'index.m3u8']) }}">
                         <media-provider></media-provider>

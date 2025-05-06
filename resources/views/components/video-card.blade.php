@@ -1,8 +1,8 @@
 @props(['slug'=>'null', 'title' => 'Untitled', 'views' => '19,210,251', 'date' => 'Jul 1, 2016', 'thumbnail' => 'https://i.ytimg.com/vi/IsXvoYeVIaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_p76hY0G6xL7J1kP2h9kG9p9p_A'])
-<a href="watch/{{ $slug }}">
-    <div class="max-w-sm rounded-lg overflow-hidden shadow-lg">
-        <div>
-            <img class="w-full h-36 object-contain"
+<a href="/watch/{{ $slug }}">
+    <div class="max-w-sm w-4/5 rounded-lg overflow-hidden shadow-lg">
+        <div class="">
+            <img class="w-full h-36"
                 src="{{ $thumbnail }}"
                 alt="Video thumbnail showing a large moon over mountains in a pinkish sky">
         </div>
