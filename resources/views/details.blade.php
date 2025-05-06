@@ -121,17 +121,25 @@
             return html;
         }
 
-        function loadComments() {
-            if (loadingComments || commentEndReached) return;
+        function loadComments(reset = false) {
+            if (loadingComments || (commentEndReached && !reset)) return;
+
             loadingComments = true;
             document.getElementById('comments-loading').style.display = 'block';
+
+            if (reset) {
+                commentPage = 1;
+                commentEndReached = false;
+                document.getElementById('comments-list').innerHTML = '';
+            }
 
             fetch(`/api/comments/${videoId}?page=${commentPage}`)
                 .then(res => res.json())
                 .then(data => {
-                    if (data.data.length === 0) {
+                    if (data.data.length === 0 && !reset) {
                         commentEndReached = true;
                     }
+
                     document.getElementById("comments_count").innerText = `${data.comments_count}`;
 
                     data.data.forEach(comment => {
@@ -145,7 +153,7 @@
 
                     document.getElementById('comments-loading').style.display = 'none';
                 });
-        }
+            }
 
         window.addEventListener('scroll', () => {
             const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
@@ -250,17 +258,14 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success) {
+                    if (data.status) {
                         document.getElementById('comment_text').value = '';
                         document.getElementById('parent_comment_id').value = '';
                         document.getElementById('replying-to').classList.add('hidden');
 
-                        commentPage = 1;
-                        commentEndReached = false;
-                        document.getElementById('comments-list').innerHTML = '';
-                        loadComments();
+                        loadComments(true);
+
                     } else {
-                        loadComments();
                         console.error('Validation failed:', data.errors);
                     }
                 })
