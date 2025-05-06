@@ -48,7 +48,7 @@
                             <button class="bg-black rounded-full w-10 h-10 font-semibold">...</button>
                         </div>
                     </div>
-                    <h2 class="text-xl font-bold mb-4">Leave a Comment</h2>
+                    <h2 class="text-xl mt-2 font-bold mb-4">Leave a Comment</h2>
                     <form id="comment-form" class="mb-6">
                         @csrf
                         <input type="hidden" id="comment_video_id" value="{{ $video->id }}">
@@ -103,24 +103,23 @@
         }
 
         function formatComment(comment, depth = 0) {
-            console.log(comment)
-                let marginLeft = depth * 20;
-                let html = `
-                    <div class="bg-twitch-bg-header p-3 rounded" style="margin-left: ${marginLeft}px">
-                        <p class="text-sm text-gray-300 font-semibold">${comment.user.name}</p>
-                        <p class="text-base text-white">${comment.text}</p>
-                        <p class="text-xs text-gray-400">${new Date(comment.created_at).toLocaleDateString()}</p>
-                    </div>
-                `;
+            let marginLeft = depth * 20;
+            let html = `
+                <div class="bg-twitch-bg-header p-3 rounded" style="margin-left: ${marginLeft}px">
+                    <p class="text-sm text-gray-300 font-semibold">${comment.user.name}</p>
+                    <p class="text-base text-white">${comment.text}</p>
+                    <p class="text-xs text-gray-400">${new Date(comment.created_at).toLocaleDateString()}</p>
+                </div>
+            `;
 
-                if (comment.replies && comment.replies.length > 0) {
-                    comment.replies.forEach(reply => {
-                        html += formatComment(reply, depth + 1);
-                    });
-                }
-
-                return html;
+            if (comment.replies && comment.replies.length > 0) {
+                comment.replies.forEach(reply => {
+                    html += formatComment(reply, depth + 1);
+                });
             }
+
+            return html;
+        }
 
         function loadComments() {
             if (loadingComments || commentEndReached) return;
@@ -256,12 +255,12 @@
                         document.getElementById('parent_comment_id').value = '';
                         document.getElementById('replying-to').classList.add('hidden');
 
-                        // Reload or insert comment
                         commentPage = 1;
                         commentEndReached = false;
                         document.getElementById('comments-list').innerHTML = '';
                         loadComments();
                     } else {
+                        loadComments();
                         console.error('Validation failed:', data.errors);
                     }
                 })
