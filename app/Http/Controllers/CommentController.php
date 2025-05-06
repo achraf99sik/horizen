@@ -74,21 +74,17 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    public function show(Request $request, $videoId)
     {
-        try {
-            return response()->json([
-                'status' => true,
-                'message' => 'Comment Existes',
-                'Comment' => $comment
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        $comments = Comment::where('video_id', $videoId)
+            ->with(['comment'])
+            ->paginate(5);
+
+        return response()->json([
+            'data' => $comments->items(),
+            'current_page' => $comments->currentPage(),
+            'total_pages' => $comments->lastPage(),
+        ]);
     }
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlaylistController;
@@ -20,6 +21,8 @@ Route::apiResource('playlist', PlaylistController::class);
 Route::apiResource('tags', TagController::class);
 Route::apiResource('history', WatchHistoryController::class);
 Route::apiResource('like', LikeController::class);
+
+Route::get('videos/{video}/related', [VideoController::class, 'fetchVideos']);
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('signup', [AuthController::class, 'store'])->name('singup');

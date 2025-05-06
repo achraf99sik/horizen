@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Category;
@@ -102,10 +103,31 @@ class VideoController extends Controller
     public function videoDetails(string $slug, Request $request): View
     {
         $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags", "likes", "comments"])->withCount("likes")->withCount("viewer")->first();
-        $videos = Video::with(["category", "user", "tags"])->withCount("viewer")->whereNot("id",$video->id)->paginate();
-        dd($videos);
-        return view("details", compact(["video","videos"]));
+        return view("details", compact("video"));
     }
+    public function fetchVideos(Request $request, $videoId)
+    {
+        $videos = Video::with(["category", "user", "tags"])
+            ->withCount("viewer")
+            ->whereNot("id", $videoId)
+            ->paginate(6);
+
+        return response()->json([
+            'data' => $videos->map(function ($v) {
+                return [
+                    'title' => $v->title,
+                    'slug' => $v->slug,
+                    'thumbnail' => Storage::url($v->thumbnail),
+                    'viewer_count' => number_format($v->viewer_count),
+                    'created_at' => $v->created_at->format('M j, Y'),
+                ];
+            }),
+
+            'current_page' => $videos->currentPage(),
+            'total_pages' => $videos->lastPage(),
+        ]);
+    }
+
     /**
      * Summary of show
      * @param mixed $slug
