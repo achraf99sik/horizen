@@ -48,11 +48,27 @@
                             <button class="bg-black rounded-full w-10 h-10 font-semibold">...</button>
                         </div>
                     </div>
+                    <h2 class="text-xl font-bold mb-4">Leave a Comment</h2>
+                    <form id="comment-form" class="mb-6">
+                        @csrf
+                        <input type="hidden" id="comment_video_id" value="{{ $video->id }}">
+                        <input type="hidden" id="parent_comment_id" value="">
+                        <textarea id="comment_text" class="w-full p-2 bg-twitch-bg-header focus:outline-none focus:ring-2 focus:ring-twitch-purple rounded" rows="4"
+                            placeholder="Write your comment..."></textarea>
+                        <button type="submit" class="mt-2 px-4 py-2 bg-twitch-pink text-white rounded-full">Post</button>
+                    </form>
+
+                    <!-- For reply indicator -->
+                    <div id="replying-to" class="text-sm text-gray-600 mb-2 hidden">
+                        Replying to a comment... <button onclick="cancelReply()" class="text-red-500 underline">Cancel</button>
+                    </div>
+                    <h2 class="text-xl font-bold mb-4">Comments (<span id="comments_count"></span>)</h2>
+                    <div id="comments-list" class="space-y-4"></div>
+                    <x-loading class="self-center" loadingId="comments-loading"/>
                 </div>
                 <x-loading />
                 <div id="related-videos"></div>
             </div>
-            <div id="comments-list"></div>
 
 
 @endsection
@@ -64,6 +80,7 @@
         let commentPage = 1;
         let loadingVideos = false;
         let loadingComments = false;
+        let commentEndReached = false;
 
         function loadVideos() {
             if (loadingVideos) return;
@@ -73,8 +90,6 @@
                 .then(res => res.json())
                 .then(data => {
                     data.data.forEach(video => {
-                        console.log(video);
-
                         document.getElementById('related-videos').innerHTML += `
                             <x-video-card slug="${video.slug}" title="${video.title}" thumbnail="${video.thumbnail}" views="${video.viewer_count}" date="${video.created_at}" />
                         `;
@@ -87,21 +102,49 @@
                 });
         }
 
+        function formatComment(comment, depth = 0) {
+            console.log(comment)
+                let marginLeft = depth * 20;
+                let html = `
+                    <div class="bg-twitch-bg-header p-3 rounded" style="margin-left: ${marginLeft}px">
+                        <p class="text-sm text-gray-300 font-semibold">${comment.user.name}</p>
+                        <p class="text-base text-white">${comment.text}</p>
+                        <p class="text-xs text-gray-400">${new Date(comment.created_at).toLocaleDateString()}</p>
+                    </div>
+                `;
+
+                if (comment.replies && comment.replies.length > 0) {
+                    comment.replies.forEach(reply => {
+                        html += formatComment(reply, depth + 1);
+                    });
+                }
+
+                return html;
+            }
+
         function loadComments() {
-            if (loadingComments) return;
+            if (loadingComments || commentEndReached) return;
             loadingComments = true;
+            document.getElementById('comments-loading').style.display = 'block';
+
             fetch(`/api/comments/${videoId}?page=${commentPage}`)
                 .then(res => res.json())
                 .then(data => {
+                    if (data.data.length === 0) {
+                        commentEndReached = true;
+                    }
+                    document.getElementById("comments_count").innerText = `${data.comments_count}`;
+
                     data.data.forEach(comment => {
-                        document.getElementById('comments-list').innerHTML += `
-                            <div class="comment-card">${comment.content}</div>
-                        `;
+                        document.getElementById('comments-list').innerHTML += formatComment(comment);
                     });
+
                     if (commentPage < data.total_pages) {
                         commentPage++;
                         loadingComments = false;
                     }
+
+                    document.getElementById('comments-loading').style.display = 'none';
                 });
         }
 
@@ -177,6 +220,52 @@
                         console.error('Request failed:', err);
                     });
             });
+        });
+        document.getElementById('comment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("You must be logged in to comment.");
+                return;
+            }
+
+            const text = document.getElementById('comment_text').value.trim();
+            const videoId = {{ $video->id }};
+            const parentId = document.getElementById('parent_comment_id').value || null;
+
+            if (!text) return alert("Comment cannot be empty.");
+
+            fetch('/api/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: text,
+                    video_id: videoId,
+                    comment_id: parentId
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('comment_text').value = '';
+                        document.getElementById('parent_comment_id').value = '';
+                        document.getElementById('replying-to').classList.add('hidden');
+
+                        // Reload or insert comment
+                        commentPage = 1;
+                        commentEndReached = false;
+                        document.getElementById('comments-list').innerHTML = '';
+                        loadComments();
+                    } else {
+                        console.error('Validation failed:', data.errors);
+                    }
+                })
+                .catch(err => console.error('Request failed:', err));
         });
     </script>
 @endpush

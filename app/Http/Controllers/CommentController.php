@@ -37,7 +37,7 @@ class CommentController extends Controller
                 [
                     'text' => 'required|string|max:1024',
                     'video_id' => 'required|exists:videos,id|integer',
-                    'comment_id' => 'exists:comments,id|integer'
+                    'comment_id' => 'nullable|exists:comments,id|integer'
                 ]
             );
             if ($validatedComment->fails()) {
@@ -45,7 +45,7 @@ class CommentController extends Controller
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validatedComment->errors()
-                ], 401);
+                ], 422);
             }
 
             $token = (string) $request->bearerToken();
@@ -55,7 +55,7 @@ class CommentController extends Controller
                 'text' => $request->text,
                 'video_id' => $request->video_id,
                 'comment_id' => $request->comment_id,
-                'user_id' => $payload['id']
+                'user_id' => $payload['sub']
             ]);
             return response()->json([
                 'status' => true,
@@ -77,11 +77,13 @@ class CommentController extends Controller
     public function show(Request $request, $videoId)
     {
         $comments = Comment::where('video_id', $videoId)
-            ->with(['comment'])
+            ->with(['comment','user'])
             ->paginate(5);
+        $comments_count = Comment::where('video_id', $videoId)->count();
 
         return response()->json([
             'data' => $comments->items(),
+            'comments_count' => $comments_count,
             'current_page' => $comments->currentPage(),
             'total_pages' => $comments->lastPage(),
         ]);
