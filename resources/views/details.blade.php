@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
             <div class="flex justify-around gap-6 mt-8">
                 <div class="w-1/2 player">
-                    <media-player title="{{ $video->title }}" src="{{ route("video.playlist", [$video->slug, 'index.m3u8']) }}">
+                    <media-player title="{{ $video->title }}" src="{{ route("video.playlist", [$video->slug, 'index.m3u8']) }}" id="media-player">
                         <media-provider></media-provider>
                         <media-video-layout></media-video-layout>
                     </media-player>
@@ -81,6 +81,48 @@
         let loadingVideos = false;
         let loadingComments = false;
         let commentEndReached = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('media-player');
+            let hasLoggedWatch = false;
+            const token = localStorage.getItem('token');
+
+            function sendWatchHistory() {
+                if (!hasLoggedWatch && token) {
+                    fetch('/api/watch-history', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            video_id: {{ $video->id }}
+            })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status) {
+                                hasLoggedWatch = true;
+                                console.log('Watch history recorded');
+                            } else {
+                                console.error('Failed to store watch history', data);
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+            }
+
+            video.addEventListener('timeupdate', () => {
+                if (video.currentTime >= 10 && !hasLoggedWatch) {
+                    sendWatchHistory();
+                }
+            });
+
+            video.addEventListener('ended', () => {
+                sendWatchHistory();
+            });
+        });
 
         function loadVideos() {
             if (loadingVideos) return;

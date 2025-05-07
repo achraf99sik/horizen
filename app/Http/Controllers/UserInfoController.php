@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\UserInfo;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UserInfoController extends Controller
@@ -34,45 +35,27 @@ class UserInfoController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $validated = Validator::make($request->all(), [
-                'nationality_id' => 'required|exists:nationalities,id|integer',
-                'about' => 'required|string',
-                'date_birth' => 'required|date',
-                'sex' => 'required|in:M,F',
+        $request->validate([
+            'video_id' => 'required|exists:videos,id',
+        ]);
+
+        $userId = auth()->id();
+
+        $exists = DB::table('watch_histories')
+            ->where('user_id', $userId)
+            ->where('video_id', $request->video_id)
+            ->exists();
+
+        if (!$exists) {
+            DB::table('watch_histories')->insert([
+                'user_id' => $userId,
+                'video_id' => $request->video_id,
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
-
-            if ($validated->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation error',
-                    'errors' => $validated->errors()
-                ], 422);
-            }
-            $token = (string) $request->bearerToken();
-            $payload = JWT::decode($token);
-
-            $userInfo = UserInfo::create([
-                'user_id' => $payload['id'],
-                'nationality_id' => $request->nationality_id,
-                'about' => $request->about,
-                'date_birth' => $request->date_birth,
-                'sex' => $request->sex,
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'UserInfo created successfully',
-                'data' => $userInfo
-            ], 201);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Server error',
-                'error' => $th->getMessage(),
-            ], 500);
         }
+
+        return response()->json(['status' => true, 'message' => 'Watch history saved.']);
     }
 
     /**
@@ -121,6 +104,49 @@ class UserInfoController extends Controller
                 'status' => false,
                 'message' => 'Server error',
                 'error' => $th->getMessage(),
+            ], 500);
+        }
+    }
+    public function storeOrUpdate(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'about' => 'required|string|max:1000',
+                'date_birth' => 'required|date',
+                'sex' => 'required|in:M,F',
+                'nationality_id' => 'required|exists:nationalities,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $token = $request->bearerToken();
+            $payload = JWT::decode($token);
+            $userId = $payload['sub'];
+
+            $userInfo = UserInfo::updateOrCreate(
+                ['user_id' => $userId],
+                [
+                    'about' => $request->about,
+                    'date_birth' => $request->date_birth,
+                    'sex' => $request->sex,
+                    'nationality_id' => $request->nationality_id
+                ]
+            );
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User info saved',
+                'data' => $userInfo
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
             ], 500);
         }
     }

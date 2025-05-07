@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/home', function () {
     return view('welcome');
@@ -30,3 +31,4 @@ Route::view('/signup', 'auth.signup');
 Route::view('/login', 'auth.login');
 Route::view('/Categories', 'admin.create-category');
 Route::get("/",[HomeController::class,"index"]);
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

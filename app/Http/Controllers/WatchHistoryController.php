@@ -29,37 +29,43 @@ class WatchHistoryController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = Validator::make($request->all(), [
-                'video_id' => 'required|exists:videos,id',
+            $validator = Validator::make($request->all(), [
+                'video_id' => 'required|exists:videos,id|integer',
             ]);
 
-            if ($validated->fails()) {
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validation error',
-                    'errors' => $validated->errors()
+                    'errors' => $validator->errors()
                 ], 422);
             }
 
-            $token = (string) $request->bearerToken();
+            $token = $request->bearerToken();
             $payload = JWT::decode($token);
 
-            $watchHistory = WatchHistory::create([
-                'user_id' => $payload['id'],
-                'video_id' => $request->video_id,
-            ]);
+            $userId = $payload['sub'];
+            $videoId = $request->video_id;
+
+            $existing = WatchHistory::where('user_id', $userId)
+                                    ->where('video_id', $videoId)
+                                    ->first();
+
+            if (!$existing) {
+                WatchHistory::create([
+                    'user_id' => $userId,
+                    'video_id' => $videoId,
+                ]);
+            }
 
             return response()->json([
                 'status' => true,
-                'message' => 'Watch history created successfully',
-                'data' => $watchHistory
-            ], 201);
+                'message' => 'Watch history recorded.'
+            ]);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => 'Server error',
-                'error' => $th->getMessage(),
+                'message' => $th->getMessage()
             ], 500);
         }
     }

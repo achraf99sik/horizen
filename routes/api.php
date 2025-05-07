@@ -10,6 +10,7 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlaylistController;
+use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\NationalityController;
 use App\Http\Controllers\WatchHistoryController;
 
@@ -19,7 +20,7 @@ Route::apiResource('comments', CommentController::class);
 Route::apiResource('nationalities', NationalityController::class);
 Route::apiResource('playlist', PlaylistController::class);
 Route::apiResource('tags', TagController::class);
-Route::apiResource('history', WatchHistoryController::class);
+Route::apiResource('watch-history', WatchHistoryController::class);
 Route::apiResource('like', LikeController::class);
 
 Route::get('videos/{video}/related', [VideoController::class, 'fetchVideos']);
@@ -30,3 +31,4 @@ Route::post('signup', [AuthController::class, 'store'])->name('singup');
 Route::middleware('jwt')->group(function () {
     Route::get('profile', [AuthController::class, 'show']);
 });
+Route::post('/user-info', [UserInfoController::class, 'storeOrUpdate']);

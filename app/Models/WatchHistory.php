@@ -12,6 +12,7 @@ final class WatchHistory extends Model
 {
     /** @use HasFactory<\Database\Factories\WatchHistoryFactory> */
     use HasFactory;
+    protected $fillable = ['user_id', 'video_id'];
 
     /**
      * Summary of video

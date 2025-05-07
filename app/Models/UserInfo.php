@@ -12,6 +12,8 @@ final class UserInfo extends Model
 {
     /** @use HasFactory<\Database\Factories\UserInfoFactory> */
     use HasFactory;
+    protected $fillable = ['user_id', 'nationality_id', 'about', 'date_birth', 'sex'];
+
 
     /**
      * Get the user that owns this user info.
