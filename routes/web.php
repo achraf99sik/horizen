@@ -28,4 +28,5 @@ Route::prefix("uploads")->group(function(){
 });
 Route::view('/signup', 'auth.signup');
 Route::view('/login', 'auth.login');
+Route::view('/Categories', 'admin.create-category');
 Route::get("/",[HomeController::class,"index"]);

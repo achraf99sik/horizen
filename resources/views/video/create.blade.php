@@ -165,39 +165,39 @@
             }
         });
         document.getElementById('uploadForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
+            e.preventDefault();
 
-                const formData = new FormData(this);
-                const token = localStorage.getItem('token');
+            const formData = new FormData(this);
+            const token = localStorage.getItem('token');
 
-                if (!token) {
-                    alert("You must be logged in to upload.");
-                    return;
+            if (!token) {
+                alert("You must be logged in to upload.");
+                return;
+            }
+
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Upload successful!");
+                } else {
+                    console.error(result);
+                    alert("Upload failed: " + (result.message || 'Unknown error'));
                 }
 
-                try {
-                    const response = await fetch(this.action, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        },
-                        body: formData
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        alert("Upload successful!");
-                    } else {
-                        console.error(result);
-                        alert("Upload failed: " + (result.message || 'Unknown error'));
-                    }
-
-                } catch (error) {
-                    console.error(error);
-                    alert("An error occurred while uploading.");
-                }
-            });
+            } catch (error) {
+                console.error(error);
+                alert("An error occurred while uploading.");
+            }
+        });
     </script>
 @endpush

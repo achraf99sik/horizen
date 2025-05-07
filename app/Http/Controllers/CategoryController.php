@@ -18,6 +18,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'data' => $categories->items(),
+            'category_count' => number_format(Category::all()->count()),
             'current_page' => $categories->currentPage(),
             'total_pages' => $categories->lastPage(),
             'total_items' => $categories->total(),
