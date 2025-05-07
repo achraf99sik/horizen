@@ -11,6 +11,7 @@
             <div class="bg-white p-6 shadow rounded-lg">
                 <h2 class="text-gray-600">Total Videos</h2>
                 <p class="text-2xl font-bold">{{ $totalVideos }}</p>
+
             </div>
             <div class="bg-white p-6 shadow rounded-lg">
                 <h2 class="text-gray-600">Total Comments</h2>
@@ -30,13 +31,8 @@
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     @foreach($recentVideos as $video)
-                        <div class="bg-gray-100 p-3 rounded shadow-sm">
-                            <img src="{{ Storage::url($video->thumbnail) }}" alt="Thumbnail"
-                                class="w-full h-32 object-cover rounded mb-2">
-                            <h3 class="font-semibold text-lg truncate">{{ $video->title }}</h3>
-                            <p class="text-sm text-gray-500">Views: {{ $video->viewer_count }}</p>
-                            <a href="/watch/{{ $video->slug }}" class="text-blue-500 text-sm hover:underline">View</a>
-                        </div>
+                        <x-video-card slug="{{ $video->slug }}" title="{{ $video->title }}" thumbnail="{{ Storage::url($video->thumbnail) }}" views="{{ $video->viewer_count }}"
+                            date="{{ $video->created_at->format('M j, Y') }}" />
                     @endforeach
                 </div>
             @endif
