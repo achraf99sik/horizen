@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $perPage = 10;
-        $categories = Category::paginate($perPage);
+        $categories = Category::orderBy("created_at",'desc')->paginate($perPage);
 
         return response()->json([
             'data' => $categories->items(),

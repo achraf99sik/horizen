@@ -36,7 +36,7 @@
         }
 
         function loadCategories(reset = false) {
-            if (loadingCategories || (categoryEndReached && !reset)) return;
+            if ((loadingCategories || categoryEndReached) && !reset) return;
 
             loadingCategories = true;
             document.getElementById('Categories-loading').style.display = 'block';
@@ -74,7 +74,6 @@
                 loadCategories();
             }
         });
-        loadCategories();
 
         document.getElementById('categoryForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -112,5 +111,6 @@
                     alert("An error occurred while creating.");
                 }
             });
+        loadCategories();
     </script>
 @endsection
