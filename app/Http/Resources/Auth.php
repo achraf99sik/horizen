@@ -14,12 +14,14 @@ final class Auth extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'role' => $this->role,
+            'avatar' => $this->avatar ? asset('storage/' . $this->avatar) : null,
         ];
     }
 }

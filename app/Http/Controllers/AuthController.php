@@ -24,6 +24,7 @@ final class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'role' => 'required|in:user,creator,admin',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:9048',
         ]);
 
         if ($validated->fails()) {
@@ -31,6 +32,12 @@ final class AuthController extends Controller
                 'errors' => $validated->errors(),
             ], 422);
         }
+
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
+
         $password = is_string($request->password) ? (string) $request->password : '';
 
         $user = User::create([
@@ -38,6 +45,7 @@ final class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($password),
             'role' => $request->role,
+            'avatar' => $avatarPath,
         ]);
 
         $token = $user->createToken();

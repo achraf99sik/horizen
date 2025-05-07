@@ -8,18 +8,18 @@
 
         {{-- Stats Cards --}}
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-            <div class="bg-white p-6 shadow rounded-lg">
-                <h2 class="text-gray-600">Total Videos</h2>
-                <p class="text-2xl font-bold">{{ $totalVideos }}</p>
+            <div class="bg-gradient-to-r from-lime-400 to-green-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl hover:shadow-green-500/50 dark:hover:shadow-lime-800/80">
+                <h2 class="text-lg font-semibold">Total Videos</h2>
+                <p class="text-3xl font-bold mt-2">{{ $totalVideos }}</p>
 
             </div>
-            <div class="bg-white p-6 shadow rounded-lg">
-                <h2 class="text-gray-600">Total Comments</h2>
-                <p class="text-2xl font-bold">{{ $totalComments }}</p>
+            <div class="bg-gradient-to-r from-red-400 to-orange-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl hover:shadow-pink-500/50 dark:hover:shadow-orange-800/80">
+                <h2 class="text-lg font-semibold">Total Comments</h2>
+                <p class="text-3xl font-bold mt-2">{{ $totalComments }}</p>
             </div>
-            <div class="bg-white p-6 shadow rounded-lg">
-                <h2 class="text-gray-600">Total Views</h2>
-                <p class="text-2xl font-bold">{{ number_format($totalViews) }}</p>
+            <div class="bg-gradient-to-r from-blue-400 to-purple-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300  hover:shadow-2xl hover:shadow-purple-500/50 dark:hover:shadow-blue-800/80">
+                <h2 class="text-lg font-semibold">Total Views</h2>
+                <p class="text-3xl font-bold mt-2">{{ number_format($totalViews) }}</p>
             </div>
         </div>
 

@@ -67,3 +67,18 @@
         </button>
     </div>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/api/me', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(user => {
+                document.getElementById('user-name').textContent = user.name;
+                document.getElementById('avatar-img').src = user.avatar_url;
+            });
+    });
+
+</script>
