@@ -5,6 +5,7 @@
 @section('content')
 
         <form action="{{ route('categories.store') }}" id="categoryForm">
+            @csrf
             <input type="text" name="name" id="categoryName">
             <button type="submit">create</button>
         </form>
