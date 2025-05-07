@@ -14,7 +14,7 @@ use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\NationalityController;
 use App\Http\Controllers\WatchHistoryController;
 
-Route::apiResource('user', AuthController::class);
+Route::apiResource('me', AuthController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('comments', CommentController::class);
 Route::apiResource('nationalities', NationalityController::class);

@@ -4,16 +4,34 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Auth;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
+use Kyojin\JWT\Facades\JWT;
+use App\Http\Resources\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Kyojin\JWT\Facades\JWT;
 
 final class AuthController extends Controller
 {
+    public function index(Request $request)
+    {
+        $token = (string) $request->bearerToken();
+        $payload = JWT::decode($token);
+        Log::debug('Received token', ['token' => $token]);
+        $user_id = $payload['sub'];
+        $user = User::where('id', $user_id)->first();
+
+        return response()->json([
+            'name' => $user->name ?? null,
+            'email' => $user->email ?? null,
+            'avatar_url' => Storage::url($user->avatar) ?? null,
+            'role' => $user->role ?? null,
+        ]);
+    }
+
     /**
      * Summary of store
      */
@@ -86,15 +104,5 @@ final class AuthController extends Controller
             'user' => new Auth($user),
             'token' => $token,
         ], 201);
-    }
-
-    public function show(Request $request): JsonResponse
-    {
-        $token = (string) $request->bearerToken();
-        $payload = JWT::decode($token);
-
-        return response()->json([
-            'payload' => $payload,
-        ], 200);
     }
 }
