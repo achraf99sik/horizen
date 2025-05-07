@@ -18,9 +18,8 @@
         let loadingCategories = false;
         let categoryEndReached = false;
         function formatcategory(category, depth = 0) {
-            let marginLeft = depth * 20;
             let html = `
-                <div class="bg-twitch-bg-header p-3 rounded" style="margin-left: ${marginLeft}px">
+                <div class="bg-twitch-bg-header p-3 rounded">
                     <p class="text-base text-white">${category.name}</p>
                     <p class="text-xs text-gray-400">${new Date(category.created_at).toLocaleDateString()}</p>
                 </div>
