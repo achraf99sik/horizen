@@ -11,8 +11,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $token = $request->bearerToken();
-        $payload = JWT::decode($token);
-        $userId = $payload['sub'];
+        $userId = 3;
 
         $user = User::findOrFail($userId);
 
@@ -20,7 +19,7 @@ class DashboardController extends Controller
         $totalComments = $user->comments()->count();
         $totalViews = $user->videos()->withCount('viewer')->get()->sum('viewer_count');
 
-        $recentVideos = $user->videos()->latest()->take(5)->get();
+        $recentVideos = $user->videos()->withCount('viewer')->latest()->take(5)->get();
         $recentComments = $user->comments()->with('video')->latest()->take(5)->get();
 
         return view('dashboard.index', compact('user', 'totalVideos', 'totalComments', 'totalViews', 'recentVideos', 'recentComments'));

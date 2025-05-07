@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Kyojin\JWT\Traits\HasJWT;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Kyojin\JWT\Traits\HasJWT;
 
 final class User extends Authenticatable
 {
@@ -53,5 +55,27 @@ final class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function videos(): HasMany
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    // Comments written by the user
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // User information (about, date_birth, etc.)
+    public function info(): HasOne
+    {
+        return $this->hasOne(UserInfo::class);
+    }
+
+    // Playlists created by the user
+    public function playlists(): HasMany
+    {
+        return $this->hasMany(Playlist::class);
     }
 }

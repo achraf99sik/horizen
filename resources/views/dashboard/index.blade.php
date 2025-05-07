@@ -35,7 +35,7 @@
                                 class="w-full h-32 object-cover rounded mb-2">
                             <h3 class="font-semibold text-lg truncate">{{ $video->title }}</h3>
                             <p class="text-sm text-gray-500">Views: {{ $video->viewer_count }}</p>
-                            <a href="{{ route('video.show', $video->slug) }}" class="text-blue-500 text-sm hover:underline">View</a>
+                            <a href="/watch/{{ $video->slug }}" class="text-blue-500 text-sm hover:underline">View</a>
                         </div>
                     @endforeach
                 </div>
@@ -54,7 +54,7 @@
                             <p>{{ $comment->text }}</p>
                             <p class="text-sm text-gray-500 mt-1">
                                 On
-                                <a href="{{ route('video.show', $comment->video->slug) }}" class="text-blue-600 hover:underline">
+                                <a href="/watch/{{ $video->slug }}" class="text-blue-600 hover:underline">
                                     {{ $comment->video->title }}
                                 </a> • {{ $comment->created_at->diffForHumans() }}
                             </p>
