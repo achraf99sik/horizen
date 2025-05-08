@@ -20,7 +20,6 @@ final class AuthController extends Controller
     {
         $token = (string) $request->bearerToken();
         $payload = JWT::decode($token);
-        Log::debug('Received token', ['token' => $token]);
         $user_id = $payload['sub'];
         $user = User::where('id', $user_id)->first();
 
