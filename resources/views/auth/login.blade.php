@@ -63,6 +63,7 @@
                 localStorage.setItem('token', result.token);
                 message.textContent = 'Login successful!';
                 this.reset();
+                
             } else {
                 message.textContent = result.errors ? JSON.stringify(result.errors) : result.message;
                 message.classList.replace('text-green-400', 'text-red-400');

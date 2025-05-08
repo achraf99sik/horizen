@@ -10,12 +10,12 @@
         <div class="flex justify-between items-center pb-4 mb-6 border-b border-gray-700">
             <h2 class="text-xl font-semibold text-white">Video Details</h2>
             <!-- Placeholder for close button -->
-            <button type="button" class="text-gray-400 hover:text-white">
+            <a href="/" class="text-gray-400 hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
-            </button>
+            </a>
         </div>
 
         <form action="{{ route('videos.store') }}" method="POST" id="uploadForm" enctype="multipart/form-data" class="space-y-6">
