@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
@@ -30,5 +31,6 @@ Route::prefix("uploads")->group(function(){
 Route::view('/signup', 'auth.signup');
 Route::view('/login', 'auth.login');
 Route::view('/Categories', 'admin.create-category');
+Route::get('/Categories/{Category}', [CategoryController::class, "show"]);
 Route::get("/",[HomeController::class,"index"]);
 Route::post('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

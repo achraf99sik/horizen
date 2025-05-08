@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Video;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -65,21 +67,14 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($category)
     {
-        try {
-            return response()->json([
-                'status' => true,
-                'message' => 'category Existes',
-                'category' => $category
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        $users = User::all();
+        $categories = Category::all();
+        ////////////////////// THIS IS THE HOME PAGE DATA ////////////////////////////////////////
+        $video = Video::with(["category", "user", "tags"])->where('category_id', $category)->withCount("viewer")->get();
+        //////////////////////////////////////////////////////////////////////////////////////
+        return view('home.home', compact('users', 'categories', 'video'));
     }
 
     /**
