@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Kyojin\JWT\Services\JWTService;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $token = $request->bearerToken();
-        $userId = 3;
+        $token = explode(';', $request->header("cookie"))[1];
+        $token = preg_replace('/^ token=/', '', $token);
+        $userId = JWT::decode($token)['sub'];
 
         $user = User::findOrFail($userId);
 

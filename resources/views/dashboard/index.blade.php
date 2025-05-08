@@ -50,7 +50,7 @@
                             <p>{{ $comment->text }}</p>
                             <p class="text-sm text-gray-500 mt-1">
                                 On
-                                <a href="/watch/{{ $video->slug }}" class="text-blue-600 hover:underline">
+                                <a href="/watch/{{ !empty($video->slug) ?? true }}" class="text-blue-600 hover:underline">
                                     {{ $comment->video->title }}
                                 </a> • {{ $comment->created_at->diffForHumans() }}
                             </p>

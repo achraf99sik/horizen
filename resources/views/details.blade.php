@@ -164,7 +164,7 @@
         }
 
         function loadComments(reset = false) {
-            if (loadingComments || (commentEndReached && !reset)) return;
+            if ((loadingComments || commentEndReached) && !reset) return;
 
             loadingComments = true;
             document.getElementById('comments-loading').style.display = 'block';
