@@ -23,90 +23,28 @@
                         </svg>
                     </button>
                 </div>
-                <h5 class="text-sm font-semibold mb-2 ml-1">FOLLOWED CHANNELS</h5>
-                <ul>
-                    <!-- Example Followed Channels (Repeat as needed) -->
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/cd620f56-f789-4dfb-a952-1328041e9b89-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">sinatraa</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/f4ee91ba-1d77-460b-a614-a07651945197-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">Subroza</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/01235450-e6f5-414a-9b93-5095d61a45cf-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">ESLCS</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/17a1562b-7f03-434f-b76f-0f3b3b101ff4-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">schrodingerLee</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/8d429715-1b09-471f-9645-81f34a539cb7-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">Caedrel</span></a></li>
-                    <!-- ... more channels -->
-                    <li><button class="text-xs text-twitch-pink hover:underline ml-1">Show More</button></li>
-                </ul>
-            </div>
+                
 
-            <!-- Recommended Channels Section -->
             <div class="mb-4">
                 <h5 class="text-sm font-semibold mb-2 ml-1">RECOMMENDED CHANNELS</h5>
                 <ul>
-                    <!-- Example Recommended Channels (Repeat as needed) -->
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/ff0cb160-b6f8-4928-ab5e-c9789dc8e1b0-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">shanks_ttv</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/06a07a30-03e1-48fe-a358-89be48057306-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">Emmyuh</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/cb66019c-8126-4413-a2a7-1216c18446a8-profile_image-70x70.jpg"
-                                alt=""><span class="text-sm truncate">joshseki</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/16e41e3b-0b64-4330-8685-d186f8bf79bf-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">ShivFPS</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/35c0d5ac-65d0-4bee-8a7d-6486f52178a7-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">HisWattson</span></a></li>
-                    <li class="mb-1"><a href="#"
-                            class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
-                                class="w-6 h-6 rounded-full"
-                                src="https://static-cdn.jtvnw.net/jtv_user_pictures/28d84913-f186-4c97-9176-3a46f6a505cc-profile_image-70x70.png"
-                                alt=""><span class="text-sm truncate">Woohoojin</span></a></li>
-                    <!-- ... more channels -->
-                    <li><button class="text-xs text-twitch-pink hover:underline ml-1">Show More</button></li>
+                    @foreach ($users as $user)
+                        <li class="mb-1"><a href="#" class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-twitch-bg-hover"><img
+                                    class="w-6 h-6 rounded-full"
+                                    src="{{ $user->avatar_url }}"
+                                    alt=""><span class="text-sm truncate">{{ $user->name }}</span></a></li>
+                    @endforeach
+                    <button class="text-xs text-twitch-pink hover:underline ml-1">Show More</button></li>
                 </ul>
             </div>
         </aside>
 
-        <!-- Main Content Grid Area -->
         <main class="flex-1 p-6  h-full">
             <h1 class="text-5xl font-bold mb-6">Browse</h1>
-            <!-- Category Filters -->
             <div class="flex space-x-3 mb-6 py-6 overflow-x-auto overflow-y-visible max-w-4xl category-scrollbar">
-                <!-- Example Categories (Add more) -->
                 @foreach ($categories as $category)
                     <x-category-card id="{{ $category->id }}" name="{{ $category->name }}"/>
                 @endforeach
-                <!-- ... Add more categories -->
             </div>
 
             <!-- Video Grid -->
