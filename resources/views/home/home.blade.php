@@ -103,11 +103,9 @@
             <!-- Category Filters -->
             <div class="flex space-x-3 mb-6 py-6 overflow-x-auto overflow-y-visible max-w-4xl category-scrollbar">
                 <!-- Example Categories (Add more) -->
-                <x-category-card id="1" name="games"/>
-                <x-category-card id="1" name="podcasts"/>
-                <x-category-card id="1" name="music"/>
-                <x-category-card id="1" name="creative"/>
-                <x-category-card id="1" name="esports"/>
+                @foreach ($categories as $category)
+                    <x-category-card id="{{ $category->id }}" name="{{ $category->name }}"/>
+                @endforeach
                 <!-- ... Add more categories -->
             </div>
 

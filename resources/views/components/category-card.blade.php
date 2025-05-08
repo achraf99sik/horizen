@@ -1,5 +1,5 @@
 @props(['id' => '1', 'name' => 'Untitled'])
-<a href="category/{{ $id }}"
+<a href="/Categories/{{ $id }}"
     class="bg-twitch-pink h-8 w-36 relative text-white font-semibold py-2 px-4 rounded-md flex items-center space-x-2 hover:bg-black whitespace-nowrap flex-shrink-0">
     <span>{{ ucfirst($name) }}</span>
     <!-- Placeholder Icon - Replace with actual game icon -->

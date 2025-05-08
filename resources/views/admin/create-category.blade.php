@@ -21,6 +21,7 @@
                     <x-loading class="" loadingId="Categories-loading"/>
                 </div>
             </div>
+
         <script>
 
             let categoryPage = 1;
@@ -31,6 +32,11 @@
                     <div class="bg-twitch-bg-header p-3 rounded">
                         <p class="text-base text-white">${category.name}</p>
                         <p class="text-xs text-gray-400">${new Date(category.created_at).toLocaleDateString()}</p>
+                        <form action="/api/categories/${category.id}"  method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" class="bg-red-600 text-white px-2 py-1 rounded text-sm mt-2" value="Delete">
+                        </form>
                     </div>
                 `;
 

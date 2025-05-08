@@ -32,5 +32,6 @@ Route::view('/signup', 'auth.signup');
 Route::view('/login', 'auth.login');
 Route::view('/Categories', 'admin.create-category');
 Route::get('/Categories/{Category}', [CategoryController::class, "show"]);
+Route::delete('/Categories/{Category}', [CategoryController::class, "destroy"])->name("category.delete");
 Route::get("/",[HomeController::class,"index"]);
 Route::post('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
