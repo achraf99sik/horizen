@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $tags = Tag::paginate($perPage);
@@ -25,7 +26,7 @@ class TagController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -59,7 +60,7 @@ class TagController extends Controller
         }
     }
 
-    public function show(Tag $tag)
+    public function show(Tag $tag): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -68,7 +69,7 @@ class TagController extends Controller
         ], 200);
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): JsonResponse
     {
         $tag->delete();
 

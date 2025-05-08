@@ -29,6 +29,6 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('signup', [AuthController::class, 'store'])->name('singup');
 
 Route::middleware('jwt')->group(function () {
-    Route::get('profile', [AuthController::class, 'show']);
+    Route::get('profile', [AuthController::class, 'index']);
 });
 Route::post('/user-info', [UserInfoController::class, 'storeOrUpdate']);

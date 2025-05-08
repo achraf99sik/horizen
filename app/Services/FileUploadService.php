@@ -12,7 +12,7 @@ class FileUploadService extends BaseUploadedFile
      * @param mixed $options
      * @return mixed{file: string, folder: string|bool|string}
      */
-    public function store($path = '', $options = [])
+    public function store($path = '',$options = []): array|bool|string
     {
         if ($path == 'raw') {
             $data = ['folder' => trim($this->hashName(), '.'.pathinfo($this->hashName())['extension']), 'file' => $this->hashName()];

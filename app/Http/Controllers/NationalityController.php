@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Nationality;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class NationalityController extends Controller
@@ -12,7 +13,7 @@ class NationalityController extends Controller
     /**
      * Display a listing of the nationalities.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $nationalities = Nationality::paginate($perPage);
@@ -31,7 +32,7 @@ class NationalityController extends Controller
     /**
      * Store a newly created nationality in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -68,7 +69,7 @@ class NationalityController extends Controller
     /**
      * Display the specified nationality.
      */
-    public function show(Nationality $nationality)
+    public function show(Nationality $nationality): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -80,7 +81,7 @@ class NationalityController extends Controller
     /**
      * Update the specified nationality in storage.
      */
-    public function update(Request $request, Nationality $nationality)
+    public function update(Request $request, Nationality $nationality): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -117,7 +118,7 @@ class NationalityController extends Controller
     /**
      * Remove the specified nationality from storage.
      */
-    public function destroy(Nationality $nationality)
+    public function destroy(Nationality $nationality): JsonResponse
     {
         $nationality->delete();
 

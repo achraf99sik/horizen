@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $categories = Category::orderBy("created_at",'desc')->paginate($perPage);
@@ -32,7 +34,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validatedCategory = Validator::make(
@@ -68,9 +70,9 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($category)
+    public function show(int $category): View
     {
-        $users = User::all()->mapWithKeys(function ($user) {
+        $users = User::all()->mapWithKeys(function (User $user): array {
             return [
                 $user->id => (object) [
                     'id' => $user->id,
@@ -93,7 +95,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category): JsonResponse
     {
         $category->update($request->all());
         return response()->json([
@@ -106,7 +108,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): JsonResponse
     {
         $category->delete();
         return response()->json([

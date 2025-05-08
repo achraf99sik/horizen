@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Kyojin\JWT\Facades\JWT;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $comments = Comment::paginate($perPage);
@@ -29,7 +30,7 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validatedComment = Validator::make(
@@ -74,7 +75,7 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $videoId)
+    public function show(Request $request, int $videoId): JsonResponse
     {
         $comments = Comment::where('video_id', $videoId)
             ->with(['comment','user'])
@@ -92,7 +93,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Comment $comment): JsonResponse
     {
         $validatedComment = Validator::make(
             $request->all(),
@@ -122,7 +123,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): JsonResponse
     {
         $comment->delete();
         return response()->json([

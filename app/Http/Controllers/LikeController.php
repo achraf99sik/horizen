@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class LikeController extends Controller
@@ -12,7 +13,7 @@ class LikeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $likes = Like::paginate($perPage);
@@ -29,7 +30,7 @@ class LikeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validatedlike = Validator::make(
@@ -91,7 +92,7 @@ class LikeController extends Controller
      * Display the specified resource.
      */
 
-    public function show($video_id, Request $request)
+    public function show(int $video_id, Request $request): JsonResponse
     {
         $token = (string) $request->bearerToken();
         $payload = JWT::decode($token);
@@ -107,7 +108,7 @@ class LikeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Like $like)
+    public function destroy(Like $like): JsonResponse
     {
         $like->delete();
         return response()->json([

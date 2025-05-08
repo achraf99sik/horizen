@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\UserInfo;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +15,7 @@ class UserInfoController extends Controller
     /**
      * Display a listing of the user infos.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $userInfos = UserInfo::paginate($perPage);
@@ -33,7 +34,7 @@ class UserInfoController extends Controller
     /**
      * Store a newly created user info in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'video_id' => 'required|exists:videos,id',
@@ -61,7 +62,7 @@ class UserInfoController extends Controller
     /**
      * Display the specified user info.
      */
-    public function show(UserInfo $userInfo)
+    public function show(UserInfo $userInfo): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -73,7 +74,7 @@ class UserInfoController extends Controller
     /**
      * Update the specified user info in storage.
      */
-    public function update(Request $request, UserInfo $userInfo)
+    public function update(Request $request, UserInfo $userInfo): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -107,7 +108,7 @@ class UserInfoController extends Controller
             ], 500);
         }
     }
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(Request $request): JsonResponse
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -154,7 +155,7 @@ class UserInfoController extends Controller
     /**
      * Remove the specified user info from storage.
      */
-    public function destroy(UserInfo $userInfo)
+    public function destroy(UserInfo $userInfo): JsonResponse
     {
         $userInfo->delete();
 

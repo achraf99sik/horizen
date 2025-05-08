@@ -10,13 +10,12 @@ use Kyojin\JWT\Facades\JWT;
 use App\Http\Resources\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 final class AuthController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $token = (string) $request->bearerToken();
         $payload = JWT::decode($token);

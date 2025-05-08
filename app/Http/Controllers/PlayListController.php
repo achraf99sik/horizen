@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Playlist;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class PlaylistController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $playlists = Playlist::paginate($perPage);
@@ -25,7 +26,7 @@ class PlaylistController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -64,7 +65,7 @@ class PlaylistController extends Controller
         }
     }
 
-    public function update(Request $request, Playlist $playlist)
+    public function update(Request $request, Playlist $playlist): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -97,7 +98,7 @@ class PlaylistController extends Controller
         }
     }
 
-    public function show(Playlist $playlist)
+    public function show(Playlist $playlist): JsonResponse
     {
         try {
             return response()->json([
@@ -114,7 +115,7 @@ class PlaylistController extends Controller
         }
     }
 
-    public function destroy(Playlist $playlist)
+    public function destroy(Playlist $playlist): JsonResponse
     {
         try {
             $playlist->delete();

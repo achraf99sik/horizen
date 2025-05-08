@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\Comment;
 use App\Models\Category;
 use Illuminate\View\View;
 use App\Jobs\ProcessVideo;
 use Kyojin\JWT\Facades\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +26,7 @@ class VideoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $users = User::all();
         $categories = Category::all();
@@ -35,7 +36,7 @@ class VideoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|integer|exists:categories,id',
@@ -105,7 +106,7 @@ class VideoController extends Controller
         $video = (object) Video::whereSlug($slug)->with(["category", "user", "tags", "likes", "comments"])->withCount("likes")->withCount("viewer")->first();
         return view("details", compact("video"));
     }
-    public function fetchVideos(Request $request, $videoId)
+    public function fetchVideos(Request $request, int $videoId): JsonResponse
     {
         $videos = Video::with(["category", "user", "tags"])
             ->withCount("viewer")
@@ -113,7 +114,7 @@ class VideoController extends Controller
             ->paginate(6);
 
         return response()->json([
-            'data' => $videos->map(function ($v) {
+            'data' => $videos->map(function (object $v) {
                 return [
                     'title' => $v->title,
                     'slug' => $v->slug,
@@ -170,20 +171,4 @@ class VideoController extends Controller
     {
         return Storage::disk("uploads")->download($folder . "/videos/" . $file);
     }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id)
-    // {
-    //     //
-    // }
 }

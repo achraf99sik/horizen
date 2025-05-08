@@ -65,7 +65,7 @@
         "style": "pint",
         "ignore": "peck --ignore-all",
         "test:style": "pint --test",
-        "test:unit": "pest --parallel --coverage --exactly=100",
+        "test:unit": "pest tests/Unit --parallel --coverage --exactly=100",
         "test:report": "pest --parallel --coverage --exactly=100 --coverage-html=coverage",
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:types": "phpstan",

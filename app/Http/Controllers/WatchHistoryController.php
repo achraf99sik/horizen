@@ -6,11 +6,12 @@ namespace App\Http\Controllers;
 use Kyojin\JWT\Facades\JWT;
 use App\Models\WatchHistory;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
 class WatchHistoryController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = 10;
         $watchHistories = WatchHistory::paginate($perPage);
@@ -26,7 +27,7 @@ class WatchHistoryController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -70,7 +71,7 @@ class WatchHistoryController extends Controller
         }
     }
 
-    public function show(WatchHistory $watchHistory)
+    public function show(WatchHistory $watchHistory): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -79,7 +80,7 @@ class WatchHistoryController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, WatchHistory $watchHistory)
+    public function update(Request $request, WatchHistory $watchHistory): JsonResponse
     {
         try {
             $validated = Validator::make($request->all(), [
@@ -111,7 +112,7 @@ class WatchHistoryController extends Controller
         }
     }
 
-    public function destroy(WatchHistory $watchHistory)
+    public function destroy(WatchHistory $watchHistory): JsonResponse
     {
         $watchHistory->delete();
 
