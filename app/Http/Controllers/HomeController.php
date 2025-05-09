@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $users = User::all()->mapWithKeys(function (User $user): array {
+        $users = User::paginate(10)->mapWithKeys(function (User $user): array {
             return [
                 $user->id => (object) [
                     'id' => $user->id,
@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         $categories = Category::all();
         ////////////////////// THIS IS THE HOME PAGE DATA ////////////////////////////////////////
-        $video = Video::with(["category", "user", "tags"])->withCount("viewer")->get();
+        $video = Video::with(["category", "user", "tags"])->withCount("viewer")->paginate();
         //////////////////////////////////////////////////////////////////////////////////////
         return view('home.home', compact('users', 'categories', 'video'));
     }
