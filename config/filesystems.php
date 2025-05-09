@@ -62,6 +62,12 @@ return [
             'report' => false,
         ],
 
+        'uploads' => [
+            'driver' => 'local',
+            'root' => storage_path('uploads'),
+            'visibility' => 'private',
+        ]
+
     ],
 
     /*

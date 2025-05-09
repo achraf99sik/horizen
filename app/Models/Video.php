@@ -8,11 +8,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Video extends Model
 {
     /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
+    protected $fillable = [
+        'title',
+        'subtitle',
+        'slug',
+        'thumbnail',
+        'description',
+        'user_id',
+        'category_id',
+    ];
 
     /**
      * Get the category this video belong to
@@ -52,5 +62,13 @@ final class Video extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
     }
 }

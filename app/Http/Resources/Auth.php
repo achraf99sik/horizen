@@ -20,6 +20,8 @@ final class Auth extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'role' => $this->role,
+            'avatar' => $this->avatar ? asset('storage/' . $this->avatar) : null,
         ];
     }
 }

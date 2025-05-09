@@ -17,5 +17,6 @@ it('user to array', function () {
             'role',
             'created_at',
             'updated_at',
+            'avatar',
         ]);
 });

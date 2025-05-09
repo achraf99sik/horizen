@@ -10,10 +10,11 @@ uses(RefreshDatabase::class);
 it('register User Token', function (): void {
     $user = UserFactory::new()->make();
 
-    $response = $this->postJson('/api/user', [
+    $response = $this->postJson('/api/signup', [
         'name' => $user->name,
         'email' => $user->email,
         'password' => $user->password,
+        'role' => $user->role,
     ]);
 
     $response->assertStatus(201)
@@ -28,7 +29,7 @@ it('register User Token', function (): void {
 });
 
 it('data validation', function (): void {
-    $response = $this->postJson('/api/user', [
+    $response = $this->postJson('/api/signup', [
         'email' => 'unvalide_data',
     ]);
 
@@ -96,6 +97,6 @@ it('show profile', function (): void {
     $response->dump();
     $response->assertStatus(200)
         ->assertJsonStructure([
-            'payload',
+            'name',
         ]);
 });
