@@ -38,7 +38,7 @@ class ProcessVideo implements ShouldQueue
     {
         set_time_limit(0);
 
-        $folder = $this->folder; // Not argument() anymore, it's from constructor
+        $folder = $this->folder;
         $file = $this->file;
 
         $lowBitrate = (new X264)->setKiloBitrate(250);
