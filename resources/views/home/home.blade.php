@@ -23,7 +23,7 @@
                         </svg>
                     </button>
                 </div>
-                
+
 
             <div class="mb-4">
                 <h5 class="text-sm font-semibold mb-2 ml-1">RECOMMENDED CHANNELS</h5>
@@ -50,8 +50,14 @@
             <!-- Video Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-8">
                 @foreach ($video as $v)
-                    <x-video-card slug="{{ $v->slug }}" title="{{ $v->title }}" thumbnail="{{ Storage::url($v->thumbnail) }}" views="{{ number_format($v->viewer_count) }}" date="{{ date_format($v->created_at, 'M j, Y')}}" />
+                    @if (strpos(Storage::url($v->thumbnail), 'thumbnails') == false)
+                        <x-video-card slug="{{ $v->slug }}" title="{{ $v->title }}" thumbnail="https://www.cyberpowersystem.co.uk/blog/w/wp-content/uploads/2025/02/004A6694-scaled.jpg"
+                            views="{{ number_format($v->viewer_count) }}" date="{{ date_format($v->created_at, 'M j, Y')}}" />
+                    @else
+                            <x-video-card slug="{{ $v->slug }}" title="{{ $v->title }}" thumbnail="{{ Storage::url($v->thumbnail) }}" views="{{ number_format($v->viewer_count) }}" date="{{ date_format($v->created_at, 'M j, Y')}}" />
+                    @endif
                 @endforeach
+                <div>{{ $video->links() }}</div>
             </div>
         </main>
 
