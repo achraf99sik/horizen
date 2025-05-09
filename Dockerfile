@@ -31,8 +31,8 @@ COPY . .
 
 RUN composer install
 
-ENV PORT=8080
+ENV PORT=9000
 
-EXPOSE 8080
+EXPOSE 9000
 
-CMD ["php", "artisan", "serve"]
+CMD ["php-fpm"]
